@@ -6,7 +6,7 @@ button_elem.addEventListener("click",function(){
         return;
     }
     var file = file_elem.files[0];
-    browser.runtime.sendMessage(URL.createObjectURL(file))
+    chrome.runtime.sendMessage(URL.createObjectURL(file))
 })
 
 function inject_loading_element() {
@@ -49,7 +49,7 @@ function google_post_error_elem_remove() {
     alert("Failed to send the image to Google.");
 }
 
-browser.runtime.onMessage.addListener(function (message) {
+chrome.runtime.onMessage.addListener(function (message) {
     switch (message) {
         case "load-start":
             console.log("load-start")

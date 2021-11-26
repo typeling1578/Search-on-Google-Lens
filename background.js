@@ -1,14 +1,14 @@
 function search_by_google_lens(image_url, tab) {
-    browser.tabs.sendMessage(tab.id, "load-start")
+    chrome.tabs.sendMessage(tab.id, "load-start")
 
     //fetchでやったほうがいいのはわかってるけど、使い方がいまいちわからんので、とりあえずXHR。理解したら、書き換える。
 
     function imaeg_get_error() {
-        browser.tabs.sendMessage(tab.id, "image-get-error")
+        chrome.tabs.sendMessage(tab.id, "image-get-error")
     }
 
     function google_post_error() {
-        browser.tabs.sendMessage(tab.id, "google-post-error")
+        chrome.tabs.sendMessage(tab.id, "google-post-error")
     }
 
     function reqListener() {
@@ -16,7 +16,7 @@ function search_by_google_lens(image_url, tab) {
             imaeg_get_error();
             return;
         }
-        browser.tabs.sendMessage(tab.id, "image-get-end")
+        chrome.tabs.sendMessage(tab.id, "image-get-end")
 
         var res = this.response;
         console.log(res);
@@ -32,14 +32,13 @@ function search_by_google_lens(image_url, tab) {
                 return;
             }
 
-            browser.tabs.sendMessage(tab.id, "google-post-end")
+            chrome.tabs.sendMessage(tab.id, "google-post-end")
 
             var res = this.responseText;
             console.log(res)
             var url = res.match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/)[0];
             console.log(url)
-            window.open(url)
-            browser.tabs.create({ url: url })
+            chrome.tabs.create({ url: url })
         }
         var xhr2 = new XMLHttpRequest();
         xhr2.open("POST", "https://lens.google.com/upload?ep=ccm&s=&st=" + (new Date()).getTime())
@@ -55,17 +54,17 @@ function search_by_google_lens(image_url, tab) {
     xhr.send();
 }
 
-browser.browserAction.onClicked.addListener(function(){
-    browser.tabs.create({ url: chrome.runtime.getURL("popup.html") })
+chrome.browserAction.onClicked.addListener(function(){
+    chrome.tabs.create({ url: chrome.runtime.getURL("popup.html") })
 })
 
-browser.contextMenus.create({
+chrome.contextMenus.create({
     id: "image_right_click_selection",
     title: "Search on Google Lens",
     contexts: ["image"]
 })
 
-browser.contextMenus.onClicked.addListener(function (info, tab) {
+chrome.contextMenus.onClicked.addListener(function (info, tab) {
     switch (info.menuItemId) {
         case "image_right_click_selection":
             console.log(info.srcUrl);
@@ -74,6 +73,6 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
     }
 })
 
-browser.runtime.onMessage.addListener(function(message, sender){
+chrome.runtime.onMessage.addListener(function(message, sender){
     search_by_google_lens(message, sender.tab)
 })

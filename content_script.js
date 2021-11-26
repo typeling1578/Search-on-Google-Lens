@@ -38,7 +38,7 @@ function google_post_error_elem_remove() {
     alert("Failed to send the image to Google.");
 }
 
-browser.runtime.onMessage.addListener(function (message) {
+chrome.runtime.onMessage.addListener(function (message) {
     switch (message) {
         case "load-start":
             console.log("load-start")

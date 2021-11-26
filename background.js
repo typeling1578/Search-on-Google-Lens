@@ -1,4 +1,4 @@
-function search_by_google_lens(image_url, tab) {
+function search_on_google_lens(image_url, tab) {
     chrome.tabs.sendMessage(tab.id, "load-start")
 
     //fetchでやったほうがいいのはわかってるけど、使い方がいまいちわからんので、とりあえずXHR。理解したら、書き換える。
@@ -68,11 +68,11 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
     switch (info.menuItemId) {
         case "image_right_click_selection":
             console.log(info.srcUrl);
-            search_by_google_lens(info.srcUrl, tab)
+            search_on_google_lens(info.srcUrl, tab)
             break;
     }
 })
 
 chrome.runtime.onMessage.addListener(function(message, sender){
-    search_by_google_lens(message, sender.tab)
+    search_on_google_lens(message, sender.tab)
 })

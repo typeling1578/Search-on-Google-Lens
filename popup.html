@@ -2,12 +2,15 @@
 
 <head>
     <title>Search on Google Lens</title>
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96x96.png">
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
         }
 
-        body {
+        .main,
+        .header-main {
             box-sizing: border-box;
             width: 100%;
             padding-right: 15px;
@@ -17,40 +20,92 @@
         }
 
         @media (min-width: 576px) {
-            body {
+
+            .main,
+            .header-main {
                 max-width: 540px;
             }
         }
 
         @media (min-width: 768px) {
-            body {
+
+            .main,
+            .header-main {
                 max-width: 720px;
             }
         }
 
         @media (min-width: 992px) {
-            body {
+
+            .main,
+            .header-main {
                 max-width: 960px;
             }
         }
 
         @media (min-width: 1200px) {
-            body {
+
+            .main,
+            .header-main {
                 max-width: 1140px;
+            }
+        }
+
+        .main {
+            margin-top: 6rem;
+            margin-bottom: 6rem;
+        }
+
+        header {
+            background-color: rgb(255, 205, 113);
+            position: fixed;
+            width: 100%;
+            top: 0px;
+            left: 0px;
+            color: #000;
+        }
+
+        body {
+            background-color: #f9f9fb;
+        }
+
+        .file-dragover {
+            background-color: #d4d2dd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #2b2a33;
+                color: #fff;
+            }
+
+            .file-dragover {
+                background-color: #64636e;
             }
         }
     </style>
 </head>
 
 <body>
-    <h1>Search on Google Lens</h1>
-    <hr>
-    Select image file:
-    <input id="file_elem" type="file">
-    <input value="Search" id="button_elem" type="button">
-    <br>
-    <br>
-    <small>&copy; 2021 typeling1578.</small>
+    <header>
+        <div class="header-main">
+            <h1 style="color: black;"><img src="icons/icon-96x96.png" style="max-width: 1em;max-height: 1em;vertical-align: middle;">Search on Google Lens</h1>
+        </div>
+    </header>
+    <div class="main">
+        <h2>Select image file</h2>
+        <div id="dropzone" style="border: 1px solid; padding: 30px;">
+            <h3>Drag and drop file or</h3>
+            <input type="file" id="fileinput" accept=".png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff">
+        </div>
+        <br>
+        <div id="preview"></div>
+        <br>
+        <input value="Search!" id="button_elem" style="font-size: 30px;" type="button">
+        <br>
+        <br>
+        <small>&copy; 2021 typeling1578.</small>
+    </div>
 </body>
 <script src="popup.js"></script>
 

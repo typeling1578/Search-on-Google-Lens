@@ -1,12 +1,62 @@
 var button_elem = document.getElementById("button_elem");
-var file_elem = document.getElementById("file_elem");
+var dropzone = document.getElementById("dropzone");
+var fileinput = document.getElementById("fileinput");
+var preview = document.getElementById("preview");
 
-button_elem.addEventListener("click",function(){
-    if(file_elem.files.length == 0){
+dropzone.addEventListener("dragover", function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.classList = ["file-dragover"];
+});
+
+dropzone.addEventListener("dragleave", function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.classList = ["file-dragleave"];
+});
+
+dropzone.addEventListener("drop", function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.classList = ["file-drop"];
+    var files = e.dataTransfer.files;
+    if (files.length > 1){
+        alert("Only one file can be uploaded at a time.");
         return;
     }
-    var file = file_elem.files[0];
-    chrome.runtime.sendMessage(URL.createObjectURL(file))
+    fileinput.files = files;
+    if(!(files[0].type == "image/png" || files[0].type == "image/jpeg" || files[0].type == "image/webp" || files[0].type == "image/tiff")){
+        alert("Unsupported file type.")
+        return;
+    }
+    previewfile(files[0]);
+});
+
+fileinput.addEventListener("change", function () {
+    if(!(this.files[0].type == "image/png" || this.files[0].type == "image/jpeg" || this.files[0].type == "image/webp" || this.files[0].type == "image/tiff")){
+        alert("Unsupported file type.")
+        return;
+    }
+    previewfile(this.files[0]);
+});
+
+function previewfile(file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+        preview.innerHTML = "";
+        var img = document.createElement("img");
+        img.style.width = "100%";
+        img.style.maxWidth = "500px";
+        img.style.maxHeight = "500px";
+        img.style.border = "1px solid"
+        img.src = reader.result;
+        preview.appendChild(img);
+    };
+}
+
+button_elem.addEventListener("click",function(){
+    chrome.runtime.sendMessage(preview.getElementsByTagName("img")[0].src)
 })
 
 function inject_loading_element() {

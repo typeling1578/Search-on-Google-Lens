@@ -31,7 +31,7 @@ function search_on_google_lens(image_url, tab) {
 
         var form = new FormData()
         form.set("encoded_image", res)
-        form.set("image_url", "https://" + generateRandomByteString(12) + ".com/" + generateRandomByteString(12);//プライバシー保護のため、適当なURLを送信
+        form.set("image_url", "https://" + generateRandomByteString(12) + ".com/" + generateRandomByteString(12));//プライバシー保護のため、適当なURLを送信
         form.set("sbisrc", "Chromium 98.0.4725.0 Windows")
 
         function reqListener2() {

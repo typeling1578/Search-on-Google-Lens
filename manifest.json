@@ -8,6 +8,8 @@
         "96": "icons/icon-96x96.png"
     },
     "permissions": [
+        "webRequest",
+        "webRequestBlocking",
         "<all_urls>",
         "contextMenus"
     ],

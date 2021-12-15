@@ -46,10 +46,9 @@ function previewfile(file) {
     reader.onload = function() {
         preview.innerHTML = "";
         var img = document.createElement("img");
-        img.style.width = "100%";
-        img.style.maxWidth = "500px";
-        img.style.maxHeight = "500px";
-        img.style.border = "1px solid"
+        img.style.maxWidth = "100%";
+        img.style.maxHeight = "70vh";
+        img.style.border = "1px solid";
         img.src = reader.result;
         preview.appendChild(img);
     };

@@ -2,6 +2,7 @@
 
 <head>
     <title>Search on Google Lens</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
     <link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96x96.png">
     <style>
         body {
@@ -102,7 +103,7 @@
         <h2>Select image file</h2>
         <div id="dropzone" style="border: 1px solid; padding: 30px;">
             <h3>Drag and drop file or</h3>
-            <input type="file" id="fileinput" accept=".png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff">
+            <input style="max-width: 100%;" type="file" id="fileinput" accept=".png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff">
         </div>
         <br>
         <div id="preview"></div>

@@ -27,7 +27,9 @@
         {
             "run_at": "document_start",
             "matches": [
-                "<all_urls>"
+                "http://*/*",
+                "https://*/*",
+                "file:///*"
             ],
             "js": [
                 "content_script.js"

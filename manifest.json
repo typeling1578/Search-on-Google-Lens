@@ -6,7 +6,7 @@
     "default_locale": "en",
     "applications": {
         "gecko": {
-            "id": "search-on-google-lens@typeling1578",
+            "id": "{56b8308e-566b-4dc0-9957-f6341ceb8552}",
             "strict_min_version": "91.0"
         }
     },

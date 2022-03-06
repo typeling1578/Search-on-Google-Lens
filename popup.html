@@ -3,6 +3,7 @@
 <head>
     <title>Search on Google Lens</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <meta charset="utf-8">
     <link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96x96.png">
     <style>
         body {
@@ -100,15 +101,15 @@
         </div>
     </header>
     <div class="main">
-        <h2>Select image file</h2>
+        <h2 class="i18n-text" data-i18n-id="selectImageFile"></h2>
         <div id="dropzone" style="border: 1px solid; padding: 30px;">
-            <h3>Drag and drop file or</h3>
+            <h3 class="i18n-text" data-i18n-id="dragAndDrop"></h3>
             <input style="max-width: 100%;" type="file" id="fileinput" accept=".png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff">
         </div>
         <br>
         <div id="preview"></div>
         <br>
-        <input value="Search!" id="button_elem" style="font-size: 30px;" type="button">
+        <input class="i18n-value" data-i18n-id="searchButton" value="" id="button_elem" style="font-size: 30px;" type="button">
         <br>
         <br>
         <small>&copy; 2021 typeling1578.</small>

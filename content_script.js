@@ -38,7 +38,7 @@ function inject_loading_element() {
     main_elem_img.src = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjAwcHgiIGhlaWdodD0iMjAwcHgiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzQyODVmNCIgc3Ryb2tlLXdpZHRoPSIxMCIgcj0iMzUiIHN0cm9rZS1kYXNoYXJyYXk9IjE2NC45MzM2MTQzMTM0NjQxNSA1Ni45Nzc4NzE0Mzc4MjEzOCI+CiAgPGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBkdXI9IjFzIiB2YWx1ZXM9IjAgNTAgNTA7MzYwIDUwIDUwIiBrZXlUaW1lcz0iMDsxIj48L2FuaW1hdGVUcmFuc2Zvcm0+CjwvY2lyY2xlPgo8L3N2Zz4=";
 
     var main_elem_text = document.createElement("div");
-    main_elem_text.innerText = "Fetching image...";
+    main_elem_text.innerText = browser.i18n.getMessage("fetchingImage");
 
     main_elem.appendChild(main_elem_img);
     main_elem.appendChild(main_elem_text);
@@ -50,7 +50,7 @@ function inject_loading_element() {
 
 function image_get_end_elem_update() {
     var elem = document.getElementById("search_on_google_lens_elem").querySelector("div > div > div");
-    elem.innerText = "Sending image to Google...";
+    elem.innerText = browser.i18n.getMessage("sendingImage");
 }
 
 function google_post_end_elem_remove() {
@@ -61,13 +61,13 @@ function google_post_end_elem_remove() {
 function image_get_error_elem_remove() {
     var elem = document.getElementById("search_on_google_lens_elem");
     elem.remove();
-    alert("Failed to fetch the image.");
+    alert(browser.i18n.getMessage("fetchingImageError"));
 }
 
 function google_post_error_elem_remove() {
     var elem = document.getElementById("search_on_google_lens_elem");
     elem.remove();
-    alert("Failed to send the image to Google.");
+    alert(browser.i18n.getMessage("sendingImageError"));
 }
 
 chrome.runtime.onMessage.addListener(function (message) {

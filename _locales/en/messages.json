@@ -1,0 +1,23 @@
+{
+    "selectImageFile": {
+        "message": "Select image file"
+    },
+    "dragAndDrop": {
+        "message": "Drag and drop file or"
+    },
+    "fetchingImage": {
+        "message": "Fetching image..."
+    },
+    "fetchingImageError": {
+        "message": "Failed to fetch the image."
+    },
+    "sendingImage": {
+        "message": "Sending image to Google..."
+    },
+    "sendingImageError": {
+        "message": "Failed to send the image to Google."
+    },
+    "searchButton": {
+        "message": "Search!"
+    }
+}

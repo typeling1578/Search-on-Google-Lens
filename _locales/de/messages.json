@@ -1,0 +1,23 @@
+{
+    "selectImageFile": {
+        "message": "Bilddatei auswählen"
+    },
+    "dragAndDrop": {
+        "message": "Datei ziehen und ablegen oder"
+    },
+    "fetchingImage": {
+        "message": "Bild abrufen..."
+    },
+    "fetchingImageError": {
+        "message": "Das Bild konnte nicht abgerufen werden."
+    },
+    "sendingImage": {
+        "message": "Bild an Google senden..."
+    },
+    "sendingImageError": {
+        "message": "Das Bild konnte nicht an Google gesendet werden."
+    },
+    "searchButton": {
+        "message": "Suche!"
+    }
+}

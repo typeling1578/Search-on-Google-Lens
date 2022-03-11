@@ -1,0 +1,23 @@
+{
+    "selectImageFile": {
+        "message": "Glisser et déposer un fichier ou"
+    },
+    "dragAndDrop": {
+        "message": "Glisser et déposer un fichier ou"
+    },
+    "fetchingImage": {
+        "message": "Obtenir l'image..."
+    },
+    "fetchingImageError": {
+        "message": "Impossible d'obtenir l'image."
+    },
+    "sendingImage": {
+        "message": "Envoi de l'image à Google..."
+    },
+    "sendingImageError": {
+        "message": "Échec de l'envoi de l'image à Google."
+    },
+    "searchButton": {
+        "message": "Cherchez !"
+    }
+}

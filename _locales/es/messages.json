@@ -1,0 +1,23 @@
+{
+    "selectImageFile": {
+        "message": "Seleccione el archivo de imagen"
+    },
+    "dragAndDrop": {
+        "message": "Arrastrar y soltar el archivo o"
+    },
+    "fetchingImage": {
+        "message": "Obteniendo imagen..."
+    },
+    "fetchingImageError": {
+        "message": "No se pudo obtener la imagen."
+    },
+    "sendingImage": {
+        "message": "Enviando la imagen a Google..."
+    },
+    "sendingImageError": {
+        "message": "No se ha podido enviar la imagen a Google."
+    },
+    "searchButton": {
+        "message": "¡Búsqueda!"
+    }
+}

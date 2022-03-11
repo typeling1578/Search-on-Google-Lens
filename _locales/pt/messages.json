@@ -1,0 +1,23 @@
+{
+    "selectImageFile": {
+        "message": "Seleccionar ficheiro de imagem"
+    },
+    "dragAndDrop": {
+        "message": "Arrastar e largar ficheiro ou"
+    },
+    "fetchingImage": {
+        "message": "Obter a imagem..."
+    },
+    "fetchingImageError": {
+        "message": "Falha em ir buscar a imagem."
+    },
+    "sendingImage": {
+        "message": "Envio de imagem para o Google..."
+    },
+    "sendingImageError": {
+        "message": "Falha no envio da imagem para o Google."
+    },
+    "searchButton": {
+        "message": "Pesquisar!"
+    }
+}

@@ -71,7 +71,7 @@ chrome.browserAction.onClicked.addListener(function () {
 
 chrome.contextMenus.create({
     id: "image_right_click_selection",
-    title: "Search on Google Lens",
+    title: browser.i18n.getMessage("browserAction"),
     contexts: ["image"]
 })
 

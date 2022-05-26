@@ -1,0 +1,32 @@
+{
+    "selectImageFile": {
+        "message": "Valige pildifail"
+    },
+    "dragAndDrop": {
+        "message": "Lohistage fail või"
+    },
+    "fetchingImage": {
+        "message": "Pildi saamine..."
+    },
+    "fetchingImageError": {
+        "message": "Pildi saamine ebaõnnestus."
+    },
+    "sendingImage": {
+        "message": "Pildi saatmine Google'ile..."
+    },
+    "sendingImageError": {
+        "message": "Pildi saatmine Google'ile ebaõnnestus."
+    },
+    "searchButton": {
+        "message": "Otsi!"
+    },
+    "extensionName": {
+        "message": "Otsing Google Lensis"
+    },
+    "extensionDescription": {
+        "message": "See on lisand, mis võimaldab teil Google Lensiga veebisaidil pilte otsida."
+    },
+    "browserAction": {
+        "message": "Otsing Google Lensis"
+    }
+}

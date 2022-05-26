@@ -1,0 +1,32 @@
+{
+    "selectImageFile": {
+        "message": "Selecteer het afbeeldingsbestand"
+    },
+    "dragAndDrop": {
+        "message": "Slepen en neerzetten van een bestand of"
+    },
+    "fetchingImage": {
+        "message": "Het beeld krijgen..."
+    },
+    "fetchingImageError": {
+        "message": "Mislukt om het beeld te krijgen."
+    },
+    "sendingImage": {
+        "message": "Ik stuur het beeld naar Google..."
+    },
+    "sendingImageError": {
+        "message": "Het lukt niet om de afbeelding naar Google te sturen."
+    },
+    "searchButton": {
+        "message": "Zoek!"
+    },
+    "extensionName": {
+        "message": "Zoeken op Google Lens"
+    },
+    "extensionDescription": {
+        "message": "Dit is een add-on waarmee je naar afbeeldingen op een website kunt zoeken met Google Lens."
+    },
+    "browserAction": {
+        "message": "Zoeken op Google Lens"
+    }
+}

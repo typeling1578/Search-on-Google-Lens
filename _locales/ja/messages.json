@@ -19,5 +19,14 @@
     },
     "searchButton": {
         "message": "検索!"
+    },
+    "extensionName": {
+        "message": "Googleレンズで検索"
+    },
+    "extensionDescription": {
+        "message": "Webサイト上の画像をGoogle Lensで検索できるようにするアドオン"
+    },
+    "browserAction": {
+        "message": "Googleレンズで検索"
     }
 }

@@ -1,0 +1,32 @@
+{
+    "selectImageFile": {
+        "message": "Pilih file gambar"
+    },
+    "dragAndDrop": {
+        "message": "Seret dan jatuhkan file atau"
+    },
+    "fetchingImage": {
+        "message": "Mendapatkan gambar..."
+    },
+    "fetchingImageError": {
+        "message": "Gagal mendapatkan gambar."
+    },
+    "sendingImage": {
+        "message": "Mengirim gambar ke Google..."
+    },
+    "sendingImageError": {
+        "message": "Gagal mengirim gambar ke Google."
+    },
+    "searchButton": {
+        "message": "Cari!"
+    },
+    "extensionName": {
+        "message": "Cari di Google Lens"
+    },
+    "extensionDescription": {
+        "message": "Ini adalah add-on yang memungkinkan Anda mencari gambar di situs web dengan Google Lens."
+    },
+    "browserAction": {
+        "message": "Cari di Google Lens"
+    }
+}

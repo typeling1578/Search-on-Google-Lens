@@ -19,5 +19,14 @@
     },
     "searchButton": {
         "message": "Пошук!"
+    },
+    "extensionName": {
+        "message": "Пошук в Google Lens"
+    },
+    "extensionDescription": {
+        "message": "Цей додаток дозволяє шукати зображення на веб-сайті за допомогою Google Lens."
+    },
+    "browserAction": {
+        "message": "Пошук в Google Lens"
     }
 }

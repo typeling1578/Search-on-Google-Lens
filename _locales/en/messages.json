@@ -19,5 +19,14 @@
     },
     "searchButton": {
         "message": "Search!"
+    },
+    "extensionName": {
+        "message": "Search on Google Lens"
+    },
+    "extensionDescription": {
+        "message": "This is an add-on that allows you to search for images on a website with Google Lens."
+    },
+    "browserAction": {
+        "message": "Search on Google Lens"
     }
 }

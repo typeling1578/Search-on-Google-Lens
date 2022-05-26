@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Search on Google Lens",
+    "name": "__MSG_extensionName__",
     "version": "1.4.1",
-    "description": "This is an add-on that allows you to search for images on a website with Google Lens.",
+    "description": "__MSG_extensionDescription__",
     "default_locale": "en",
     "applications": {
         "gecko": {
@@ -21,7 +21,7 @@
         "contextMenus"
     ],
     "browser_action": {
-        "default_title": "Search on Google Lens"
+        "default_title": "__MSG_browserAction__"
     },
     "content_scripts": [
         {

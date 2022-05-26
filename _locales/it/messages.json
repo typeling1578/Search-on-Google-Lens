@@ -1,0 +1,32 @@
+{
+    "selectImageFile": {
+        "message": "Selezionare il file immagine"
+    },
+    "dragAndDrop": {
+        "message": "Trascinare e rilasciare un file o"
+    },
+    "fetchingImage": {
+        "message": "Ottenere l'immagine..."
+    },
+    "fetchingImageError": {
+        "message": "Impossibile ottenere l'immagine."
+    },
+    "sendingImage": {
+        "message": "Invio dell'immagine a Google..."
+    },
+    "sendingImageError": {
+        "message": "Non è stato possibile inviare l'immagine a Google."
+    },
+    "searchButton": {
+        "message": "Ricerca!"
+    },
+    "extensionName": {
+        "message": "Ricerca su Google Lens"
+    },
+    "extensionDescription": {
+        "message": "Si tratta di un componente aggiuntivo che consente di cercare immagini su un sito web con Google Lens."
+    },
+    "browserAction": {
+        "message": "Ricerca su Google Lens"
+    }
+}

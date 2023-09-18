@@ -51,9 +51,7 @@ function search_on_google_lens(image_url, tab) {
                 }).then(data => {
                     if (data) {
                         chrome.tabs.sendMessage(tab.id, "google-post-end");
-                        console.log(data)
                         var url = data.match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/)[0];
-                        console.log(url)
                         chrome.tabs.create({ url: url, windowId: tab.windowId, openerTabId: tab.id });
                     }
                 }).catch(error => {

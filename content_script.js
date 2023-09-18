@@ -88,7 +88,7 @@ chrome.runtime.onMessage.addListener(function (message) {
             console.log("image-get-error");
             image_get_error_elem_remove();
             break;
-        case "google_post-error":
+        case "google-post-error":
             console.log("google-post-error");
             google_post_error_elem_remove();
             break;

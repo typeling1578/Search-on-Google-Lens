@@ -1,3 +1,3 @@
-document.body.addEventListener("touchstart",function(e){
+document.documentElement.addEventListener("touchstart", function (e) {
     e.stopImmediatePropagation();
-},true)
+}, true);

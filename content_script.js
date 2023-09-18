@@ -1,14 +1,7 @@
 if(location.hostname == "lens.google.com"){
-    function a(){
-        if(document.body && document.body.addEventListener){
-            var sc = document.createElement("script");
-            sc.src = chrome.runtime.getURL("touch_start_event_blocking.js");
-            document.body.appendChild(sc);
-        }else{
-            setTimeout(a,1)
-        }
-    }
-    setTimeout(a,1)
+    let sc = document.createElement("script");
+    sc.src = chrome.runtime.getURL("touch_start_event_blocking.js");
+    document.documentElement.appendChild(sc);
 }
 
 function inject_loading_element() {

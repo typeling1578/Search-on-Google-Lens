@@ -23,44 +23,88 @@ function generateRandomString(n) {
     return str;
 }
 
-function search_on_google_lens(image_url, tab) {
+async function search_on_google_lens(image_url, tab) {
     chrome.tabs.sendMessage(tab.id, "load-start");
-    fetch(image_url)
-        .then(res => {
+
+    let image_data_request_id = generateRandomString(12);
+
+    let listener = function(details) {
+        let requestHeaders = details.requestHeaders;
+
+        for (let requestHeader of requestHeaders) {
+            if (requestHeader.name == "Search-on-Google-Lens-Request-Id" &&
+                requestHeader.value == image_data_request_id) {
+                browser.webRequest.onBeforeSendHeaders.removeListener(listener);
+
+                requestHeaders =
+                    requestHeaders.filter(requestHeader =>
+                        requestHeader.name !== "Search-on-Google-Lens-Request-Id"
+                    );
+
+                requestHeaders.push({
+                    name: "Referer",
+                    value: tab.url,
+                });
+
+                return { requestHeaders }
+            }
+        }
+    }
+    browser.webRequest.onBeforeSendHeaders.addListener(
+        listener,
+        { urls: [image_url] },
+        ["blocking", "requestHeaders"]
+    );
+
+    let image_data = await new Promise(resolve => {
+        fetch(image_url, {
+            headers: {
+                "Search-on-Google-Lens-Request-Id": image_data_request_id
+            }
+        }).then(res => {
             if (res.status === 200) {
                 return res.blob();
-            }else{
-                chrome.tabs.sendMessage(tab.id, "image-get-error");
+            } else {
+                throw new Error(`${res.status} ${res.statusText}`);
+            }
+        }).then(data =>
+            resolve(data)
+        ).catch(e => {
+            browser.webRequest.onBeforeSendHeaders.removeListener(listener);
+            chrome.tabs.sendMessage(tab.id, "image-get-error");
+            throw e;
+        });
+    });
+    // TODO: ほんとに画像データかどうか、SVGなら変換させる
+    chrome.tabs.sendMessage(tab.id, "image-get-end");
+
+    let image_data_form = new FormData();
+    image_data_form.set("encoded_image", image_data);
+    image_data_form.set("image_url", `https://${generateRandomString(12)}.com/images/${generateRandomString(12)}`); // Send fake URL
+    image_data_form.set("sbisrc", "Chromium 98.0.4725.0 Windows");
+    await new Promise(resolve => {
+        fetch(`https://lens.google.com/upload?ep=ccm&s=&st=${generateRandomString(12)}`, {
+            method: "POST",
+            body: image_data_form,
+        }).then(res => {
+            if (res.status === 200) {
+                return res.text();
+            } else {
+                throw new Error(`${res.status} ${res.statusText}`);
             }
         }).then(data => {
-            if (data) {
-                chrome.tabs.sendMessage(tab.id, "image-get-end");
-                var form = new FormData()
-                form.set("encoded_image", data)
-                form.set("image_url", "https://" + generateRandomString(12) + ".com/" + generateRandomString(12));//プライバシー保護のため、適当なURLを送信
-                form.set("sbisrc", "Chromium 98.0.4725.0 Windows")
-                fetch("https://lens.google.com/upload?ep=ccm&s=&st=" + generateRandomString(12), {
-                    method: "POST",
-                    body: form
-                }).then(res => {
-                    if (res.status === 200) {
-                        return res.text();
-                    }else{
-                        chrome.tabs.sendMessage(tab.id, "google-post-error");
-                    }
-                }).then(data => {
-                    if (data) {
-                        chrome.tabs.sendMessage(tab.id, "google-post-end");
-                        var url = data.match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/)[0];
-                        chrome.tabs.create({ url: url, windowId: tab.windowId, openerTabId: tab.id });
-                    }
-                }).catch(error => {
-                    chrome.tabs.sendMessage(tab.id, "google-post-error");
-                })
+            let url = data.match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/)?.slice(-1)[0];
+            if (url) {
+                chrome.tabs.sendMessage(tab.id, "google-post-end");
+                chrome.tabs.create({ url: url, windowId: tab.windowId, openerTabId: tab.id });
+            } else {
+                throw new Error(`URL is not included in the result`);
             }
-        }).catch(error => {
-            chrome.tabs.sendMessage(tab.id, "image-get-error");
-        })
+        }).catch(e => {
+            chrome.tabs.sendMessage(tab.id, "google-post-error");
+            throw e;
+        });
+    });
 }
 
 chrome.browserAction.onClicked.addListener(function () {
@@ -76,7 +120,6 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
     switch (info.menuItemId) {
         case "image_right_click_selection":
-            console.log(info.srcUrl);
             search_on_google_lens(info.srcUrl, tab)
             break;
     }

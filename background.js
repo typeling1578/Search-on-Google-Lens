@@ -38,12 +38,21 @@ async function search_on_google_lens(image_url, tab) {
 
                 requestHeaders =
                     requestHeaders.filter(requestHeader =>
-                        requestHeader.name !== "Search-on-Google-Lens-Request-Id"
+                        requestHeader.name !== "Search-on-Google-Lens-Request-Id" &&
+                        requestHeader.name !== "Referer" &&
+                        requestHeader.name !== "Origin"
                     );
+
+                let url_obj = new URL(tab.url)
 
                 requestHeaders.push({
                     name: "Referer",
-                    value: tab.url,
+                    value: url_obj.href,
+                });
+
+                requestHeaders.push({
+                    name: "Origin",
+                    value: url_obj.origin
                 });
 
                 return { requestHeaders }
@@ -93,10 +102,13 @@ async function search_on_google_lens(image_url, tab) {
                 throw new Error(`${res.status} ${res.statusText}`);
             }
         }).then(data => {
-            let url = data.match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+/)?.slice(-1)[0];
+            let doc = (new DOMParser()).parseFromString(data, "text/html");
+            let url = doc?.querySelector('meta[http-equiv="refresh"]')?.getAttribute("content")
+                        ?.replace(" ", "")?.split(";")?.filter(str => str.startsWith("url="))?.slice(-1)[0]?.slice(4);
+
             if (url) {
                 chrome.tabs.sendMessage(tab.id, "google-post-end");
-                chrome.tabs.create({ url: url, windowId: tab.windowId, openerTabId: tab.id });
+                chrome.tabs.create({ url: new URL(url, "https://lens.google.com").href , windowId: tab.windowId, openerTabId: tab.id });
             } else {
                 throw new Error(`URL is not included in the result`);
             }

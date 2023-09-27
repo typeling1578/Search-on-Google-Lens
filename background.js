@@ -43,7 +43,7 @@ async function search_on_google_lens(image_url, tab) {
                         requestHeader.name !== "Origin"
                     );
 
-                let url_obj = new URL(tab.url)
+                let url_obj = new URL(tab.url);
 
                 requestHeaders.push({
                     name: "Referer",

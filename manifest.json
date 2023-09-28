@@ -40,8 +40,6 @@
         "touch_start_event_blocking.js"
     ],
     "background": {
-        "scripts": [
-            "background.js"
-        ]
+        "page": "background.html"
     }
 }

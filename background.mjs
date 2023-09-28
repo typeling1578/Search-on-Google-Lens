@@ -1,3 +1,5 @@
+import fetchPlus from "./fetchPlus.mjs";
+
 var targetPage = "https://lens.google.com/*";
 var ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4725.0 Safari/537.36";
 function rewriteUserAgentHeader(e) {
@@ -26,49 +28,13 @@ function generateRandomString(n) {
 async function search_on_google_lens(image_url, tab) {
     chrome.tabs.sendMessage(tab.id, "load-start");
 
-    let image_data_request_id = generateRandomString(12);
-
-    let listener = function(details) {
-        let requestHeaders = details.requestHeaders;
-
-        for (let requestHeader of requestHeaders) {
-            if (requestHeader.name == "Search-on-Google-Lens-Request-Id" &&
-                requestHeader.value == image_data_request_id) {
-                browser.webRequest.onBeforeSendHeaders.removeListener(listener);
-
-                requestHeaders =
-                    requestHeaders.filter(requestHeader =>
-                        requestHeader.name !== "Search-on-Google-Lens-Request-Id" &&
-                        requestHeader.name !== "Referer" &&
-                        requestHeader.name !== "Origin"
-                    );
-
-                let url_obj = new URL(tab.url);
-
-                requestHeaders.push({
-                    name: "Referer",
-                    value: url_obj.href,
-                });
-
-                requestHeaders.push({
-                    name: "Origin",
-                    value: url_obj.origin
-                });
-
-                return { requestHeaders }
-            }
-        }
-    }
-    browser.webRequest.onBeforeSendHeaders.addListener(
-        listener,
-        { urls: [image_url] },
-        ["blocking", "requestHeaders"]
-    );
+    let url_obj = new URL(tab.url);
 
     let image_data = await new Promise(resolve => {
-        fetch(image_url, {
+        fetchPlus(image_url, {
             headers: {
-                "Search-on-Google-Lens-Request-Id": image_data_request_id
+                "Referer": url_obj.href,
+                "Origin": url_obj.origin,
             }
         }).then(res => {
             if (res.status === 200) {
@@ -79,7 +45,6 @@ async function search_on_google_lens(image_url, tab) {
         }).then(data =>
             resolve(data)
         ).catch(e => {
-            browser.webRequest.onBeforeSendHeaders.removeListener(listener);
             chrome.tabs.sendMessage(tab.id, "image-get-error");
             throw e;
         });

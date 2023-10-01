@@ -90,7 +90,7 @@ if (location.protocol == "moz-extension:" || location.protocol == "chrome-extens
 }
 
 function inject_loading_element() {
-    var elem = document.createElement("div");
+    let elem = document.createElement("div");
     elem.id = "search_on_google_lens_elem";
     elem.style.position = "fixed";
     elem.style.textAlign = "center";
@@ -101,7 +101,7 @@ function inject_loading_element() {
     elem.style.backgroundColor = "rgba(0,0,0,0.6)";
     elem.style.zIndex = "1000000";
 
-    var main_elem = document.createElement("div");
+    let main_elem = document.createElement("div");
     main_elem.style.position = "absolute";
     main_elem.style.top = "50%";
     main_elem.style.left = "50%";
@@ -110,12 +110,12 @@ function inject_loading_element() {
     main_elem.style.fontSize = "50px";
     main_elem.style.whiteSpace = "nowrap";
 
-    var main_elem_img = document.createElement("img");
+    let main_elem_img = document.createElement("img");
     main_elem_img.style.width = "60px";
     main_elem_img.style.height = "60px";
     main_elem_img.src = browser.runtime.getURL("loading.svg");
 
-    var main_elem_text = document.createElement("div");
+    let main_elem_text = document.createElement("div");
     main_elem_text.innerText = browser.i18n.getMessage("fetchingImage");
 
     main_elem.appendChild(main_elem_img);
@@ -127,23 +127,23 @@ function inject_loading_element() {
 }
 
 function image_get_end_elem_update() {
-    var elem = document.getElementById("search_on_google_lens_elem").querySelector("div > div > div");
+    let elem = document.getElementById("search_on_google_lens_elem").querySelector("div > div > div");
     elem.innerText = browser.i18n.getMessage("sendingImage");
 }
 
 function google_post_end_elem_remove() {
-    var elem = document.getElementById("search_on_google_lens_elem");
+    let elem = document.getElementById("search_on_google_lens_elem");
     elem.remove();
 }
 
 function image_get_error_elem_remove() {
-    var elem = document.getElementById("search_on_google_lens_elem");
+    let elem = document.getElementById("search_on_google_lens_elem");
     elem.remove();
     alert(browser.i18n.getMessage("fetchingImageError"));
 }
 
 function google_post_error_elem_remove() {
-    var elem = document.getElementById("search_on_google_lens_elem");
+    let elem = document.getElementById("search_on_google_lens_elem");
     elem.remove();
     alert(browser.i18n.getMessage("sendingImageError"));
 }

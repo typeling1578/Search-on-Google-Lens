@@ -8,7 +8,7 @@ if (location.hostname == "lens.google.com") {
     document.documentElement.appendChild(sc);
 }
 
-if (location.protocol == "moz-extension:") {
+if (location.protocol == "moz-extension:" || location.protocol == "chrome-extension:") {
     const supported_file_types = [
         "image/png",
         "image/jpeg",

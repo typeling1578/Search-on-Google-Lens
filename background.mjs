@@ -20,7 +20,7 @@ browser.webRequest.onBeforeSendHeaders.addListener(
 );
 
 async function search_on_google_lens(image_url, tab) {
-    browser.tabs.sendMessage(tab.id, "load-start");
+    browser.tabs.sendMessage(tab.id, { type: "load-start" });
 
     const url_obj = new URL(tab.url);
 
@@ -39,12 +39,12 @@ async function search_on_google_lens(image_url, tab) {
         }).then(data =>
             resolve(data)
         ).catch(e => {
-            browser.tabs.sendMessage(tab.id, "image-get-error");
+            browser.tabs.sendMessage(tab.id, { type: "image-get-error" });
             throw e;
         });
     });
     // TODO: ほんとに画像データかどうか、SVGなら変換させる
-    browser.tabs.sendMessage(tab.id, "image-get-end");
+    browser.tabs.sendMessage(tab.id, { type: "image-get-end" });
 
     let image_data_form = new FormData();
     image_data_form.set("encoded_image", image_data);
@@ -63,7 +63,7 @@ async function search_on_google_lens(image_url, tab) {
         }).then(data =>
             resolve(data)
         ).catch(e => {
-            browser.tabs.sendMessage(tab.id, "google-post-error");
+            browser.tabs.sendMessage(tab.id, { type: "google-post-error" });
             throw e;
         });
     });
@@ -73,7 +73,7 @@ async function search_on_google_lens(image_url, tab) {
                 ?.replace(" ", "")?.split(";")?.filter(str => str.startsWith("url="))?.slice(-1)[0]?.slice(4);
 
     if (url) {
-        browser.tabs.sendMessage(tab.id, "google-post-end");
+        browser.tabs.sendMessage(tab.id, { type: "google-post-end" });
         browser.tabs.create({ url: new URL(url, "https://lens.google.com").href , windowId: tab.windowId, openerTabId: tab.id });
     } else {
         throw new Error(`URL is not included in the result`);
@@ -99,5 +99,9 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
 });
 
 browser.runtime.onMessage.addListener(function (message, sender) {
-    search_on_google_lens(message, sender.tab);
+    switch (message.type) {
+        case "send-image":
+            search_on_google_lens(message, sender.tab);
+            break;
+    }
 });

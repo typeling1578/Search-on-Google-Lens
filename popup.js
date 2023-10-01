@@ -1,3 +1,7 @@
+if (!window.browser) {
+    window.browser = chrome;
+}
+
 var button_elem = document.getElementById("button_elem");
 var dropzone = document.getElementById("dropzone");
 var fileinput = document.getElementById("fileinput");
@@ -55,7 +59,7 @@ function previewfile(file) {
 }
 
 button_elem.addEventListener("click",function(){
-    chrome.runtime.sendMessage(preview.getElementsByTagName("img")[0].src)
+    browser.runtime.sendMessage({ type: "send-image", src: preview.getElementsByTagName("img")[0].src })
 })
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -129,8 +133,8 @@ function google_post_error_elem_remove() {
     alert(browser.i18n.getMessage("sendingImageError"));
 }
 
-chrome.runtime.onMessage.addListener(function (message) {
-    switch (message) {
+browser.runtime.onMessage.addListener(function (message) {
+    switch (message.type) {
         case "load-start":
             console.log("load-start")
             inject_loading_element();

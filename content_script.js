@@ -1,6 +1,10 @@
+if (!window.browser) {
+    window.browser = chrome;
+}
+
 if(location.hostname == "lens.google.com"){
     let sc = document.createElement("script");
-    sc.src = chrome.runtime.getURL("touch_start_event_blocking.js");
+    sc.src = browser.runtime.getURL("touch_start_event_blocking.js");
     document.documentElement.appendChild(sc);
 }
 
@@ -63,8 +67,8 @@ function google_post_error_elem_remove() {
     alert(browser.i18n.getMessage("sendingImageError"));
 }
 
-chrome.runtime.onMessage.addListener(function (message) {
-    switch (message) {
+browser.runtime.onMessage.addListener(function (message) {
+    switch (message.type) {
         case "load-start":
             console.log("load-start")
             inject_loading_element();

@@ -101,7 +101,7 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
 browser.runtime.onMessage.addListener(function (message, sender) {
     switch (message.type) {
         case "send-image":
-            search_on_google_lens(message, sender.tab);
+            search_on_google_lens(message.src, sender.tab);
             break;
     }
 });

@@ -51,7 +51,7 @@ if (location.protocol == "moz-extension:") {
     });
 
     fileinput.addEventListener("change", function () {
-        if (!supported_file_types.includes(files[0].type)) {
+        if (!supported_file_types.includes(this.files[0].type)) {
             alert("Unsupported file type.");
             return;
         }

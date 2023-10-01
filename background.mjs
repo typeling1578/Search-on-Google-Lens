@@ -1,36 +1,30 @@
+import generateRandomString from "./generateRandomString.mjs";
 import fetchPlus from "./fetchPlus.mjs";
 
-var targetPage = "https://lens.google.com/*";
-var ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4725.0 Safari/537.36";
-function rewriteUserAgentHeader(e) {
-    e.requestHeaders.forEach(function (header) {
-        if (header.name.toLowerCase() === "user-agent") {
-            header.value = ua;
-        }
-    });
-    return { requestHeaders: e.requestHeaders };
+if (!window.browser) {
+    window.browser = chrome;
 }
-chrome.webRequest.onBeforeSendHeaders.addListener(
-    rewriteUserAgentHeader,
-    { urls: [targetPage] },
+
+// change user-agent
+browser.webRequest.onBeforeSendHeaders.addListener(
+    function(e) {
+        e.requestHeaders.forEach(function (header) {
+            if (header.name.toLowerCase() === "user-agent") {
+                header.value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4725.0 Safari/537.36";
+            }
+        });
+        return { requestHeaders: e.requestHeaders };
+    },
+    { urls: ["https://lens.google.com/*"] },
     ["blocking", "requestHeaders"]
 );
 
-function generateRandomString(n) {
-    var s = "abcdefghijklmnopqrstuvwxyz0123456789";
-    var str = "";
-    for (var i = 0; i < n; i++) {
-        str += s[Math.floor(Math.random() * s.length)];
-    }
-    return str;
-}
-
 async function search_on_google_lens(image_url, tab) {
-    chrome.tabs.sendMessage(tab.id, "load-start");
+    browser.tabs.sendMessage(tab.id, "load-start");
 
-    let url_obj = new URL(tab.url);
+    const url_obj = new URL(tab.url);
 
-    let image_data = await new Promise(resolve => {
+    const image_data = await new Promise(resolve => {
         fetchPlus(image_url, {
             headers: {
                 "Referer": url_obj.href,
@@ -45,12 +39,12 @@ async function search_on_google_lens(image_url, tab) {
         }).then(data =>
             resolve(data)
         ).catch(e => {
-            chrome.tabs.sendMessage(tab.id, "image-get-error");
+            browser.tabs.sendMessage(tab.id, "image-get-error");
             throw e;
         });
     });
     // TODO: ほんとに画像データかどうか、SVGなら変換させる
-    chrome.tabs.sendMessage(tab.id, "image-get-end");
+    browser.tabs.sendMessage(tab.id, "image-get-end");
 
     let image_data_form = new FormData();
     image_data_form.set("encoded_image", image_data);
@@ -67,41 +61,41 @@ async function search_on_google_lens(image_url, tab) {
                 throw new Error(`${res.status} ${res.statusText}`);
             }
         }).then(data => {
-            let doc = (new DOMParser()).parseFromString(data, "text/html");
-            let url = doc?.querySelector('meta[http-equiv="refresh"]')?.getAttribute("content")
+            const doc = (new DOMParser()).parseFromString(data, "text/html");
+            const url = doc?.querySelector('meta[http-equiv="refresh"]')?.getAttribute("content")
                         ?.replace(" ", "")?.split(";")?.filter(str => str.startsWith("url="))?.slice(-1)[0]?.slice(4);
 
             if (url) {
-                chrome.tabs.sendMessage(tab.id, "google-post-end");
-                chrome.tabs.create({ url: new URL(url, "https://lens.google.com").href , windowId: tab.windowId, openerTabId: tab.id });
+                browser.tabs.sendMessage(tab.id, "google-post-end");
+                browser.tabs.create({ url: new URL(url, "https://lens.google.com").href , windowId: tab.windowId, openerTabId: tab.id });
             } else {
                 throw new Error(`URL is not included in the result`);
             }
         }).catch(e => {
-            chrome.tabs.sendMessage(tab.id, "google-post-error");
+            browser.tabs.sendMessage(tab.id, "google-post-error");
             throw e;
         });
     });
 }
 
-chrome.browserAction.onClicked.addListener(function () {
-    chrome.tabs.create({ url: chrome.runtime.getURL("popup.html") })
-})
+browser.browserAction.onClicked.addListener(function () {
+    browser.tabs.create({ url: browser.runtime.getURL("popup.html") });
+});
 
-chrome.contextMenus.create({
+browser.contextMenus.create({
     id: "image_right_click_selection",
     title: browser.i18n.getMessage("browserAction"),
     contexts: ["image"]
-})
+});
 
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
+browser.contextMenus.onClicked.addListener(function (info, tab) {
     switch (info.menuItemId) {
         case "image_right_click_selection":
-            search_on_google_lens(info.srcUrl, tab)
+            search_on_google_lens(info.srcUrl, tab);
             break;
     }
-})
+});
 
-chrome.runtime.onMessage.addListener(function (message, sender) {
-    search_on_google_lens(message, sender.tab)
-})
+browser.runtime.onMessage.addListener(function (message, sender) {
+    search_on_google_lens(message, sender.tab);
+});

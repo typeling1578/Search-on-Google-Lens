@@ -1,11 +1,4 @@
-function generateRandomString(n) {
-    const s = "abcdefghijklmnopqrstuvwxyz0123456789";
-    let str = "";
-    for (let i = 0; i < n; i++) {
-        str += s[Math.floor(Math.random() * s.length)];
-    }
-    return str;
-}
+import generateRandomString from "./generateRandomString.mjs";
 
 export default async function(url, options = {}) {
     const requestId = generateRandomString(12);

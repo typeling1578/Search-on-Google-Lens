@@ -50,7 +50,7 @@ async function search_on_google_lens(image_url, tab) {
     image_data_form.set("encoded_image", image_data);
     image_data_form.set("image_url", `https://${generateRandomString(12)}.com/images/${generateRandomString(12)}`); // Send fake URL
     image_data_form.set("sbisrc", "Chromium 98.0.4725.0 Windows");
-    await new Promise(resolve => {
+    const data = await new Promise(resolve => {
         fetch(`https://lens.google.com/upload?ep=ccm&s=&st=${generateRandomString(12)}`, {
             method: "POST",
             body: image_data_form,
@@ -60,22 +60,24 @@ async function search_on_google_lens(image_url, tab) {
             } else {
                 throw new Error(`${res.status} ${res.statusText}`);
             }
-        }).then(data => {
-            const doc = (new DOMParser()).parseFromString(data, "text/html");
-            const url = doc?.querySelector('meta[http-equiv="refresh"]')?.getAttribute("content")
-                        ?.replace(" ", "")?.split(";")?.filter(str => str.startsWith("url="))?.slice(-1)[0]?.slice(4);
-
-            if (url) {
-                browser.tabs.sendMessage(tab.id, "google-post-end");
-                browser.tabs.create({ url: new URL(url, "https://lens.google.com").href , windowId: tab.windowId, openerTabId: tab.id });
-            } else {
-                throw new Error(`URL is not included in the result`);
-            }
-        }).catch(e => {
+        }).then(data =>
+            resolve(data)
+        ).catch(e => {
             browser.tabs.sendMessage(tab.id, "google-post-error");
             throw e;
         });
     });
+
+    const doc = (new DOMParser()).parseFromString(data, "text/html");
+    const url = doc?.querySelector('meta[http-equiv="refresh"]')?.getAttribute("content")
+                ?.replace(" ", "")?.split(";")?.filter(str => str.startsWith("url="))?.slice(-1)[0]?.slice(4);
+
+    if (url) {
+        browser.tabs.sendMessage(tab.id, "google-post-end");
+        browser.tabs.create({ url: new URL(url, "https://lens.google.com").href , windowId: tab.windowId, openerTabId: tab.id });
+    } else {
+        throw new Error(`URL is not included in the result`);
+    }
 }
 
 browser.browserAction.onClicked.addListener(function () {

@@ -1,0 +1,32 @@
+{
+    "selectImageFile": {
+        "message": "Select the image file"
+    },
+    "dragAndDrop": {
+        "message": "Drag and drop a file or"
+    },
+    "fetchingImage": {
+        "message": "Fetching the image..."
+    },
+    "fetchingImageError": {
+        "message": "Failed to fetch the image."
+    },
+    "sendingImage": {
+        "message": "Sending the image to Google..."
+    },
+    "sendingImageError": {
+        "message": "Failed to send the image to Google."
+    },
+    "searchButton": {
+        "message": "Search!"
+    },
+    "extensionName": {
+        "message": "Search on Google Lens"
+    },
+    "extensionDescription": {
+        "message": "This is an add-on that allows you to search for images on a website with Google Lens."
+    },
+    "browserAction": {
+        "message": "Search on Google Lens"
+    }
+}

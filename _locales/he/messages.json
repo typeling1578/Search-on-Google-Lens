@@ -1,32 +1,32 @@
 {
     "selectImageFile": {
-        "message": "Select the image file"
+        "message": "בחר את קובץ התמונה"
     },
     "dragAndDrop": {
-        "message": "Drag and drop a file or"
+        "message": "גרור והשלך קובץ או"
     },
     "fetchingImage": {
-        "message": "Fetching the image..."
+        "message": "מקבל את התמונה..."
     },
     "fetchingImageError": {
-        "message": "Failed to fetch the image."
+        "message": "השגת התמונה נכשלה."
     },
     "sendingImage": {
-        "message": "Sending the image to Google..."
+        "message": "התמונה נשלחת ל־Google..."
     },
     "sendingImageError": {
-        "message": "Failed to send the image to Google."
+        "message": "שליחת התמונה ל־Google נכשלה."
     },
     "searchButton": {
-        "message": "Search!"
+        "message": "חפש!"
     },
     "extensionName": {
-        "message": "Search on Google Lens"
+        "message": "חיפוש עם Google Lens"
     },
     "extensionDescription": {
-        "message": "This is an add-on that allows you to search for images on a website with Google Lens."
+        "message": "זהו תוסף המאפשר לך לחפש תמונות באתר בעזרת מרשתת Google Lens."
     },
     "browserAction": {
-        "message": "Search on Google Lens"
+        "message": "חיפוש עם Google Lens"
     }
 }

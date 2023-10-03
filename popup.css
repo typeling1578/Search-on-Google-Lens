@@ -110,7 +110,7 @@ a.primary-button {
     display: inline-block;
     background-color: var(--primary-color);
     border-radius: 18px;
-    color: #1f1f1f;
+    color: var(--primary-text-color);
     text-decoration: none;
 }
 

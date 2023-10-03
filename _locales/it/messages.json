@@ -17,8 +17,8 @@
     "sendingImageError": {
         "message": "Non è stato possibile inviare l'immagine a Google."
     },
-    "searchButton": {
-        "message": "Ricerca!"
+    "search": {
+        "message": "Ricerca"
     },
     "extensionName": {
         "message": "Ricerca su Google Lens"

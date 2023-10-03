@@ -17,7 +17,7 @@
     "sendingImageError": {
         "message": "Échec de l'envoi de l'image à Google."
     },
-    "searchButton": {
-        "message": "Cherchez !"
+    "search": {
+        "message": "Cherchez"
     }
 }

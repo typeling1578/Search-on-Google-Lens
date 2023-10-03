@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html>
 
 <head>
@@ -5,116 +7,60 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
     <meta charset="utf-8">
     <link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96x96.png">
-    <style>
-        body {
-            font-family: Roboto, Arial, sans-serif;
-            font-size: 16px;
-        }
-
-        .main,
-        .header-main {
-            box-sizing: border-box;
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        @media (min-width: 576px) {
-
-            .main,
-            .header-main {
-                max-width: 540px;
-            }
-        }
-
-        @media (min-width: 768px) {
-
-            .main,
-            .header-main {
-                max-width: 720px;
-            }
-        }
-
-        @media (min-width: 992px) {
-
-            .main,
-            .header-main {
-                max-width: 960px;
-            }
-        }
-
-        @media (min-width: 1200px) {
-
-            .main,
-            .header-main {
-                max-width: 1140px;
-            }
-        }
-
-        .main {
-            margin-top: 6rem;
-            margin-bottom: 6rem;
-        }
-
-        header {
-            background-color: rgb(255, 205, 113);
-            position: fixed;
-            width: 100%;
-            top: 0px;
-            left: 0px;
-            color: #000;
-        }
-
-        body {
-            background-color: #f9f9fb;
-        }
-
-        .file-dragover {
-            background-color: #d4d2dd;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #2b2a33;
-                color: #fff;
-            }
-
-            .file-dragover {
-                background-color: #64636e;
-            }
-        }
-
-        @media (max-width: 576px) {
-            h1 {
-                font-size: 1.5em;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="popup.css">
 </head>
 
 <body>
-    <header>
-        <div class="header-main">
-            <h1 style="color: black;"><img src="icons/icon-96x96.png" style="max-width: 1em;max-height: 1em;vertical-align: middle;"><span class="i18n-text" data-i18n-id="extensionName"></span></h1>
+    <div class="content">
+        <div class="brand-name">
+            <img img src="icons/icon-96x96.png">
+            <span class="i18n-text" data-i18n-id="extensionName"></span>
         </div>
-    </header>
-    <div class="main">
-        <h2 class="i18n-text" data-i18n-id="selectImageFile"></h2>
-        <div id="dropzone" style="border: 1px solid; padding: 30px;">
-            <h3 class="i18n-text" data-i18n-id="dragAndDrop"></h3>
-            <input style="max-width: 100%;" type="file" id="fileinput" accept=".png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff">
+        <div class="side-menu">
+            <a href="#search" class="side-menu-default i18n-text" data-i18n-id="search"></a>
+            <a href="#settings" class="i18n-text" data-i18n-id="settings">設定</a>
+            <a href="#about" class="i18n-text" data-i18n-id="aboutAddon">このアドオンについて</a>
+            <!--<a href="#donate" class="i18n-text" data-i18n-id="donate">寄付</a>-->
         </div>
-        <br>
-        <div id="preview"></div>
-        <br>
-        <input class="i18n-value" data-i18n-id="searchButton" value="" id="button_elem" style="font-size: 30px;" type="button">
-        <br>
-        <br>
-        <small>&copy; 2021 typeling1578.</small>
+        <div class="body-content">
+            <div data-page-id="search" class="inactive-page">
+                <h2 class="i18n-text" data-i18n-id="search"></h2>
+                <div class="dropzone">
+                    <h3 class="i18n-text" data-i18n-id="dragAndDrop"></h3>
+                    <input type="file" class="fileinput" accept=".png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff">
+                </div>
+                <br>
+                <div class="preview"></div>
+                <br>
+                <a href="javascript:void(0)" class="i18n-text search_button primary-button" data-i18n-id="search"></a>
+            </div>
+            <div data-page-id="settings" class="inactive-page">
+                <h2 class="i18n-text" data-i18n-id="settings"></h2>
+            </div>
+            <div data-page-id="about" class="inactive-page">
+                <h2 class="i18n-text" data-i18n-id="aboutAddon"></h2>
+                <div style="text-align: center;">
+                    <img img src="icons/icon-96x96.png">
+                    <h1 class="i18n-text" data-i18n-id="extensionName"></h1>
+                    <h2>v<span class="version-number"></span></h2>
+                    <span class="i18n-text" data-i18n-id="extensionDescription"></span>
+                    <br>
+                    <br>
+                    <span>Made with <span style="color: red;">♥</span> by <a href="https://typeling1578.dev/">typeling1578</a></span>
+                    <br>
+                    <br>
+                    <small>&copy; 2021-2023 typeling1578.</small>
+                </div>
+            </div>
+            <!--
+            <div data-page-id="donate" class="inactive-page">
+                <h2 class="i18n-text" data-i18n-id="donate"></h2>
+            </div>
+            -->
+        </div>
     </div>
 </body>
 <script src="content_script.js"></script>
+<script src="popup.js"></script>
 
 </html>

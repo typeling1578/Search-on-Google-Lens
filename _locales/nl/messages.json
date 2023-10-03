@@ -17,8 +17,8 @@
     "sendingImageError": {
         "message": "Het lukt niet om de afbeelding naar Google te sturen."
     },
-    "searchButton": {
-        "message": "Zoek!"
+    "search": {
+        "message": "Zoek"
     },
     "extensionName": {
         "message": "Zoeken op Google Lens"

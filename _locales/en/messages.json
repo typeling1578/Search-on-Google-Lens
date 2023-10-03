@@ -17,8 +17,17 @@
     "sendingImageError": {
         "message": "Failed to send the image to Google."
     },
-    "searchButton": {
-        "message": "Search!"
+    "search": {
+        "message": "Search"
+    },
+    "settings": {
+        "message": "Settings"
+    },
+    "aboutAddon": {
+        "message": "About"
+    },
+    "donate": {
+        "message": "Donate"
     },
     "extensionName": {
         "message": "Search on Google Lens"

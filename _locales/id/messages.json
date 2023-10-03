@@ -17,8 +17,8 @@
     "sendingImageError": {
         "message": "Gagal mengirim gambar ke Google."
     },
-    "searchButton": {
-        "message": "Cari!"
+    "search": {
+        "message": "Cari"
     },
     "extensionName": {
         "message": "Cari di Google Lens"

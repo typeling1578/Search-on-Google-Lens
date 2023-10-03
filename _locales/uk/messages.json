@@ -17,8 +17,8 @@
     "sendingImageError": {
         "message": "Не вдалося надіслати зображення до Google."
     },
-    "searchButton": {
-        "message": "Пошук!"
+    "search": {
+        "message": "Пошук"
     },
     "extensionName": {
         "message": "Пошук в Google Lens"

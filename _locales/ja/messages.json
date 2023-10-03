@@ -17,8 +17,17 @@
     "sendingImageError": {
         "message": "画像の送信に失敗しました"
     },
-    "searchButton": {
-        "message": "検索!"
+    "search": {
+        "message": "検索"
+    },
+    "settings": {
+        "message": "設定"
+    },
+    "aboutAddon": {
+        "message": "このアドオンについて"
+    },
+    "donate": {
+        "message": "寄付"
     },
     "extensionName": {
         "message": "Googleレンズで検索"

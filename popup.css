@@ -1,0 +1,116 @@
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 16px;
+}
+
+body {
+    background-color: #f7f9fc;
+    color: #1f1f1f;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1c1b22;
+        color: #fbfbfe;
+    }
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    padding: 20px;
+    box-sizing: border-box;
+    grid-template-areas:
+        'header header'
+        'navbar body  ';
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
+.content > .brand-name {
+    font-size: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    grid-area: header;
+}
+
+.content > .brand-name > img {
+    width: 2em;
+    height: 2em;
+    vertical-align: middle;
+}
+
+.content > .brand-name > span {
+    vertical-align: middle;
+}
+
+.content > .side-menu {
+    width: 256px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    grid-area: navbar;
+}
+
+.content > .side-menu > a {
+    width: 100%;
+    padding: 15px;
+    margin: 3px;
+    box-sizing: border-box;
+    border-radius: 99px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.content > .side-menu > a:hover {
+    background-color: rgba(128,128,128,0.1);
+}
+
+.content > .side-menu > a:active {
+    background-color: rgba(128,128,128,0.1);
+}
+
+.content > .side-menu > a[selected="true"] {
+    background-color: #c2e7ff;
+}
+
+.content > .body-content {
+    grid-area: body;
+    border-radius: 18px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    overflow: auto;
+    height: 100%;
+}
+
+.content > .body-content > .inactive-page {
+    display: none;
+}
+
+a.primary-button {
+    padding-inline: 18px;
+    padding-block: 15px;
+    display: inline-block;
+    background-color: #c2e7ff;
+    border-radius: 18px;
+    color: #1f1f1f;
+    text-decoration: none;
+}
+
+.dropzone {
+    border: 1px solid gray;
+    padding: 30px;
+    border-radius: 18px;
+}
+
+.dropzone > input {
+    max-width: 100%;
+}

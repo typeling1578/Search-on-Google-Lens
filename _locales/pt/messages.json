@@ -17,7 +17,7 @@
     "sendingImageError": {
         "message": "Falha no envio da imagem para o Google."
     },
-    "searchButton": {
-        "message": "Pesquisar!"
+    "search": {
+        "message": "Pesquisar"
     }
 }

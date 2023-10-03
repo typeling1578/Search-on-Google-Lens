@@ -17,8 +17,8 @@
     "sendingImageError": {
         "message": "Pildi saatmine Google'ile ebaõnnestus."
     },
-    "searchButton": {
-        "message": "Otsi!"
+    "search": {
+        "message": "Otsi"
     },
     "extensionName": {
         "message": "Otsing Google Lensis"

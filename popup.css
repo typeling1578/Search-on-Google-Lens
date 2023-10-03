@@ -81,7 +81,7 @@ body {
     background-color: rgba(128,128,128,0.1);
 }
 
-.content > .side-menu > a:active {
+.content > .side-menu > a:focus {
     background-color: rgba(128,128,128,0.1);
 }
 

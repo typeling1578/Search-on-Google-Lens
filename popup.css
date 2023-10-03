@@ -118,6 +118,11 @@ a.primary-button {
     border: 1px solid gray;
     padding: 30px;
     border-radius: 18px;
+    transition: background-color 0.2s;
+}
+
+.dropzone[data-dropzone-status="file-dragover"] {
+    background-color: rgba(128,128,128,0.1);
 }
 
 .dropzone > input {

@@ -90,6 +90,10 @@ body {
     color: var(--primary-text-color);
 }
 
+.content > .side-menu > a > i {
+    margin-right: 8px;
+}
+
 .content > .body-content {
     grid-area: body;
     border-radius: 18px;

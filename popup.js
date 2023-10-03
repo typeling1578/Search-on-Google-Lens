@@ -59,19 +59,19 @@ document.addEventListener("DOMContentLoaded", function() {
     dropzone.addEventListener("dragover", function(e) {
         e.stopPropagation();
         e.preventDefault();
-        this.classList = ["file-dragover"];
+        this.setAttribute("data-dropzone-status", "file-dragover");
     });
 
     dropzone.addEventListener("dragleave", function(e) {
         e.stopPropagation();
         e.preventDefault();
-        this.classList = ["file-dragleave"];
+        this.setAttribute("data-dropzone-status", "file-dragleave");
     });
 
     dropzone.addEventListener("drop", function(e) {
         e.stopPropagation();
         e.preventDefault();
-        this.classList = ["file-drop"];
+        this.setAttribute("data-dropzone-status", "file-drop");
         const files = e.dataTransfer.files;
         if (files.length > 1){
             alert("Only one file can be uploaded at a time.");

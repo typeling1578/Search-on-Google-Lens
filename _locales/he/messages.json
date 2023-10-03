@@ -1,0 +1,32 @@
+{
+    "selectImageFile": {
+        "message": "בחר את קובץ התמונה"
+    },
+    "dragAndDrop": {
+        "message": "גרור והשלך קובץ או"
+    },
+    "fetchingImage": {
+        "message": "מקבל את התמונה..."
+    },
+    "fetchingImageError": {
+        "message": "השגת התמונה נכשלה."
+    },
+    "sendingImage": {
+        "message": "התמונה נשלחת ל־Google..."
+    },
+    "sendingImageError": {
+        "message": "שליחת התמונה ל־Google נכשלה."
+    },
+    "searchButton": {
+        "message": "חפש!"
+    },
+    "extensionName": {
+        "message": "חיפוש עם Google Lens"
+    },
+    "extensionDescription": {
+        "message": "זהו תוסף המאפשר לך לחפש תמונות באתר מרשתת בעזרת Google Lens."
+    },
+    "browserAction": {
+        "message": "חיפוש עם Google Lens"
+    }
+}

@@ -1,9 +1,13 @@
 import generateRandomString from "./generateRandomString.mjs";
 import fetchPlus from "./fetchPlus.mjs";
+import addonSettings from "./addonSettings.mjs";
 
 if (!window.browser) {
     window.browser = chrome;
 }
+
+const settings = new addonSettings();
+await settings.init();
 
 // change user-agent
 browser.webRequest.onBeforeSendHeaders.addListener(
@@ -74,7 +78,12 @@ async function search_on_google_lens(image_url, tab) {
 
     if (url) {
         browser.tabs.sendMessage(tab.id, { type: "google-post-end" });
-        browser.tabs.create({ url: new URL(url, "https://lens.google.com").href , windowId: tab.windowId, openerTabId: tab.id });
+        browser.tabs.create({
+            url: new URL(url, "https://lens.google.com").href,
+            windowId: tab.windowId,
+            openerTabId: tab.id,
+            active: !settings.get("local", "newTabsLoadInBackground"),
+        });
     } else {
         throw new Error(`URL is not included in the result`);
     }

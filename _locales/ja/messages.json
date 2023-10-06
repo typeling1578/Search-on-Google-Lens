@@ -26,6 +26,9 @@
     "aboutAddon": {
         "message": "このアドオンについて"
     },
+    "newTabsLoadInBackgroundSetting": {
+        "message": "検索結果が新しいタブで開かれたら、すぐにそのタブに切り替える"
+    },
     "donate": {
         "message": "寄付"
     },

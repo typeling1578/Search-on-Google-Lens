@@ -50,6 +50,10 @@
             </div>
             <div data-page-id="settings" class="inactive-page">
                 <h2 class="i18n-text" data-i18n-id="settings"></h2>
+                <div class="settings-item">
+                    <input type="checkbox" data-pref-id="newTabsLoadInBackground" data-pref-reverse>
+                    <label class="i18n-text" data-i18n-id="newTabsLoadInBackgroundSetting"></label>
+                </div>
             </div>
             <div data-page-id="about" class="inactive-page">
                 <h2 class="i18n-text" data-i18n-id="aboutAddon"></h2>
@@ -78,6 +82,6 @@
     </div>
 </body>
 <script src="content_script.js"></script>
-<script src="popup.js"></script>
+<script type="module" src="popup.mjs"></script>
 
 </html>

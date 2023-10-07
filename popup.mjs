@@ -1,5 +1,9 @@
 import addonSettings from "./addonSettings.mjs";
 
+if (!window.browser) {
+    window.browser = chrome;
+}
+
 const settings = new addonSettings();
 await settings.init();
 

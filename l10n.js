@@ -1,3 +1,7 @@
+if (!window.browser) {
+    window.browser = chrome;
+}
+
 for (const elem of document.querySelectorAll(".i18n-text")) {
     elem.innerText = browser.i18n.getMessage(elem.getAttribute("data-i18n-id"));
 }

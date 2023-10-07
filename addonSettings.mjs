@@ -19,16 +19,16 @@ export default class {
         if (this.initialized) return;
         this.initialized = true;
 
-        this.local = await browser.storage.local.get();
-        this.sync = await browser.storage.sync.get();
+        this.local = await new Promise(resolve => browser.storage.local.get(null, (items) => resolve(items)));
+        this.sync = await new Promise(resolve => browser.storage.sync.get(null, (items) => resolve(items)));
         try {
-            this.managed = await browser.storage.managed.get();
+            this.managed = await new Promise(resolve => browser.storage.managed.get(null, (items) => resolve(items)));
         } catch (e) {}
 
         browser.storage.onChanged.addListener(async (changes, areaName) => {
             if (!["local", "sync"].includes(areaName)) return;
 
-            this[areaName] = await browser.storage[areaName].get();
+            this[areaName] = await new Promise(resolve => browser.storage[areaName].get(null, (items) => resolve(items)));
             for (const listener of this._listeners) {
                 if (listener.type == areaName) {
                     listener.callback(areaName, changes, this[areaName]);

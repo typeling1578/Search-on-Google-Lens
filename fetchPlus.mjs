@@ -1,5 +1,9 @@
 import generateRandomString from "./generateRandomString.mjs";
 
+if (!window.browser) {
+    window.browser = chrome;
+}
+
 export default async function(url, options = {}) {
     const requestId = generateRandomString(12);
 

@@ -104,3 +104,9 @@ function previewfile(file) {
 button_elem.addEventListener("click",function() {
     browser.runtime.sendMessage({ type: "send-image", src: preview.getElementsByTagName("img")[0].src });
 });
+
+for (const elem of document.querySelectorAll("iframe")) {
+    setInterval(function() {
+        elem.style.height = elem.contentWindow.document.body.scrollHeight + "px";
+    }, 1);
+}

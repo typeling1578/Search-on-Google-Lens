@@ -34,52 +34,9 @@ if (location.hash) {
     location.hash = `#${page_id}`;
 }
 
-let elems = document.getElementsByClassName("i18n-text");
-for (let i = 0; i < elems.length; i++) {
-    elems[i].innerText = browser.i18n.getMessage(elems[i].getAttribute("data-i18n-id"));
-}
-
-let elems2 = document.getElementsByClassName("i18n-value");
-for (let i = 0; i < elems2.length; i++) {
-    elems2[i].value = browser.i18n.getMessage(elems2[i].getAttribute("data-i18n-id"));
-}
-
 for (let elem of document.querySelectorAll(".version-number")) {
     elem.innerText = browser.runtime.getManifest().version;
 }
-
-for (let elem of document.querySelectorAll("input[data-pref-id]")) {
-    const prefId = elem.getAttribute("data-pref-id");
-    if (elem.type == "checkbox") {
-        elem.checked = elem.hasAttribute("data-pref-reverse") ?
-            !settings.get("local", prefId) :
-            settings.get("local", prefId);
-    } else {
-        elem.value = settings.get("local", prefId);
-    }
-    elem.addEventListener("change", function() {
-        settings.set(
-            "local",
-            prefId,
-            elem.type == "checkbox" ?
-                (elem.hasAttribute("data-pref-reverse") ? !elem.checked : elem.checked) :
-                elem.value
-        );
-    });
-}
-settings.addListener(function(areaName, changes, config) {
-    for (const key of Object.keys(config)) {
-        for (const elem of document.querySelectorAll(`input[data-pref-id="${key}"]`)) {
-            if (elem.type == "checkbox") {
-                elem.checked = elem.hasAttribute("data-pref-reverse") ?
-                    !config[key] :
-                    config[key];
-            } else {
-                elem.value = config[key];
-            }
-        }
-    }
-}, {type: "local"});
 
 const supported_file_types = [
     "image/png",

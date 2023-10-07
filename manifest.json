@@ -25,7 +25,7 @@
         "default_title": "__MSG_browserAction__"
     },
     "options_ui": {
-        "page": "popup.html"
+        "page": "options.html"
     },
     "content_scripts": [
         {

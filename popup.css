@@ -132,3 +132,8 @@ a.primary-button {
 .dropzone > input {
     max-width: 100%;
 }
+
+iframe {
+    width: 100%;
+    border: 0;
+}

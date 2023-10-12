@@ -48,11 +48,12 @@ async function search_on_google_lens(image_url, tab) {
             throw e;
         });
     });
-    // TODO: ほんとに画像データかどうか、SVGなら変換させる
+    // TODO: ほんとに画像データかどうか確認する
     const image_data_processed = await resizeImage(image_data, {
         mode: "maxSize",
         maxWidth: 1000,
         maxHeight: 1000,
+        forceEncode: true,
     });
     browser.tabs.sendMessage(tab.id, { type: "image-get-end" });
 

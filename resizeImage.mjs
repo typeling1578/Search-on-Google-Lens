@@ -5,6 +5,7 @@ export default async function(image_blob, options_) {
         maxHeight: 1000,
         width: null,
         height: null,
+        forceEncode: false,
     }, options_);
 
     const image_blob_url = URL.createObjectURL(image_blob);
@@ -54,7 +55,7 @@ export default async function(image_blob, options_) {
         throw new Error("invalid options");
     }
 
-    if (image_elem.naturalWidth == afterWidth && image_elem.naturalHeight == afterHeight) {
+    if (!options.forceEncode && image_elem.naturalWidth == afterWidth && image_elem.naturalHeight == afterHeight) {
         // no resizing is required.
         URL.revokeObjectURL(image_blob_url);
         return image_blob;

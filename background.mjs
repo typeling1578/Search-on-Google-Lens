@@ -51,8 +51,8 @@ async function search_on_google_lens(image_url, tab) {
     // TODO: ほんとに画像データかどうか、SVGなら変換させる
     const image_data_processed = await resizeImage(image_data, {
         mode: "maxSize",
-        maxWidth: 2000,
-        maxHeight: 2000,
+        maxWidth: 1000,
+        maxHeight: 1000,
     });
     browser.tabs.sendMessage(tab.id, { type: "image-get-end" });
 

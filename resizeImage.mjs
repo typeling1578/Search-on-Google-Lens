@@ -1,8 +1,8 @@
 export default async function(image_blob, options_) {
     const options = Object.assign({
         mode: "maxSize",
-        maxWidth: 2000,
-        maxHeight: 2000,
+        maxWidth: 1000,
+        maxHeight: 1000,
         width: null,
         height: null,
     }, options_);
@@ -76,7 +76,7 @@ export default async function(image_blob, options_) {
         afterHeight,
     );
 
-    const after_image_blob = await new Promise(resolve => context.canvas.toBlob(resolve, "image/png"));
+    const after_image_blob = await new Promise(resolve => context.canvas.toBlob(resolve, "image/jpeg", 0.9));
 
     canvas.remove();
     URL.revokeObjectURL(image_blob_url);

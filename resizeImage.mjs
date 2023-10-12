@@ -13,7 +13,7 @@ export default async function(image_blob, options_) {
     const image_elem = await new Promise((resolve, reject) => {
         const image = new Image();
         image.addEventListener("load", () => resolve(image));
-        image.addEventListener("error", () => reject);
+        image.addEventListener("error", reject);
         image.src = image_blob_url;
     });
 

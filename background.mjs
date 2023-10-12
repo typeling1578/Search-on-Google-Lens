@@ -1,6 +1,7 @@
 import generateRandomString from "./generateRandomString.mjs";
 import fetchPlus from "./fetchPlus.mjs";
 import addonSettings from "./addonSettings.mjs";
+import resizeImage from "./resizeImage.mjs";
 
 if (!window.browser) {
     window.browser = chrome;
@@ -48,10 +49,15 @@ async function search_on_google_lens(image_url, tab) {
         });
     });
     // TODO: ほんとに画像データかどうか、SVGなら変換させる
+    const image_data_processed = await resizeImage(image_data, {
+        mode: "maxSize",
+        maxWidth: 2000,
+        maxHeight: 2000,
+    });
     browser.tabs.sendMessage(tab.id, { type: "image-get-end" });
 
     let image_data_form = new FormData();
-    image_data_form.set("encoded_image", image_data);
+    image_data_form.set("encoded_image", image_data_processed);
     image_data_form.set("image_url", `https://${generateRandomString(12)}.com/images/${generateRandomString(12)}`); // Send fake URL
     image_data_form.set("sbisrc", "Chromium 98.0.4725.0 Windows");
     const data = await new Promise(resolve => {

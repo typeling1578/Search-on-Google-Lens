@@ -32,6 +32,9 @@
     "newTabsLoadInBackgroundSetting": {
         "message": "When a search result is opened in a new tab, switch to it immediately"
     },
+    "tipsRightClick": {
+        "message": "tips: You can right-click on an image on the website and search for that image in the menu."
+    },
     "extensionName": {
         "message": "Search on Google Lens"
     },

@@ -137,3 +137,9 @@ iframe {
     width: 100%;
     border: 0;
 }
+
+.primary-zone {
+    padding: 25px;
+    border-radius: 18px;
+    background-color: var(--background-color);
+}

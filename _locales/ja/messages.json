@@ -32,6 +32,9 @@
     "donate": {
         "message": "寄付"
     },
+    "tipsRightClick": {
+        "message": "ヒント: ウェブサイト上の画像を右クリックしてメニューからその画像を検索できます。"
+    },
     "extensionName": {
         "message": "Googleレンズで検索"
     },

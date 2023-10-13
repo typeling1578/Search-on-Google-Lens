@@ -48,13 +48,18 @@ async function search_on_google_lens(image_url, tab) {
             throw e;
         });
     });
-    // TODO: ほんとに画像データかどうか確認する
-    const image_data_processed = await resizeImage(image_data, {
-        mode: "maxSize",
-        maxWidth: 1000,
-        maxHeight: 1000,
-        forceEncode: true,
-    });
+    let image_data_processed;
+    try {
+        image_data_processed = await resizeImage(image_data, {
+            mode: "maxSize",
+            maxWidth: 1000,
+            maxHeight: 1000,
+            forceEncode: true,
+        });
+    } catch (e) {
+        browser.tabs.sendMessage(tab.id, { type: "image-get-error" });
+        throw e;
+    }
     browser.tabs.sendMessage(tab.id, { type: "image-get-end" });
 
     let image_data_form = new FormData();

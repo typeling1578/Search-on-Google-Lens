@@ -77,7 +77,7 @@ export default async function(image_blob, options_) {
         afterHeight,
     );
 
-    const after_image_blob = await new Promise(resolve => context.canvas.toBlob(resolve, "image/jpeg", 0.9));
+    const after_image_blob = await new Promise(resolve => context.canvas.toBlob(resolve, "image/jpeg", 0.95));
 
     canvas.remove();
     URL.revokeObjectURL(image_blob_url);

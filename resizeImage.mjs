@@ -1,4 +1,4 @@
-export default async function(image_blob, options_) {
+export default async function resizeImage(image_blob, options_) {
     const options = Object.assign({
         mode: "maxSize",
         maxWidth: 1000,
@@ -16,6 +16,45 @@ export default async function(image_blob, options_) {
         image.addEventListener("error", reject);
         image.src = image_blob_url;
     });
+
+    if (image_elem.naturalWidth === 0 || image_elem.naturalHeight === 0) {
+        // 寸法が指定されていないSVGかもしれない
+        if (image_blob.size > 1 * 1024 * 1024) {
+            throw new Error("Filesize too large");
+        }
+        const text = await image_blob.text();
+        console.log(text);
+        if (/<svg.*>.*<\/svg>/is.test(text)) {
+            const xml_data = (new DOMParser()).parseFromString(text, "image/svg+xml");
+            const svg_elem = xml_data.querySelector("svg");
+            if (image_elem.naturalWidth === 0 && image_elem.naturalHeight === 0) {
+                svg_elem.setAttribute(
+                    "width",
+                    options.mode == "fixedSize" ? options.width : options.maxWidth,
+                );
+                svg_elem.setAttribute(
+                    "height",
+                    options.mode == "fixedSize" ? options.height : options.maxHeight,
+                );
+            } else if (iamge_elem.naturalWidth === 0) {
+                svg_elem.setAttribute(
+                    "width",
+                    svg_elem.getAttribute("height"),
+                );
+            } else if (image_elem.naturalHeight === 0) {
+                svg_elem.setAttribute(
+                    "height",
+                    svg_elem.getAttribute("width"),
+                );
+            }
+            return resizeImage(
+                new Blob([xml_data.documentElement.outerHTML], { type: "image/svg+xml" }),
+                options,
+            );
+        } else {
+            throw new Error("invalid image size");
+        }
+    }
 
     let afterWidth;
     let afterHeight;

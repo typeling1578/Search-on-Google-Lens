@@ -20,10 +20,9 @@ export default async function resizeImage(image_blob, options_) {
     if (image_elem.naturalWidth === 0 || image_elem.naturalHeight === 0) {
         // 寸法が指定されていないSVGかもしれない
         if (image_blob.size > 1 * 1024 * 1024) {
-            throw new Error("Filesize too large");
+            throw new Error("filesize too large");
         }
         const text = await image_blob.text();
-        console.log(text);
         if (/<svg.*>.*<\/svg>/is.test(text)) {
             const xml_data = (new DOMParser()).parseFromString(text, "image/svg+xml");
             const svg_elem = xml_data.querySelector("svg");

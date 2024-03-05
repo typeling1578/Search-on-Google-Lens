@@ -1,7 +1,7 @@
-import generateRandomString from "./generateRandomString.mjs";
-import fetchPlus from "./fetchPlus.mjs";
-import addonSettings from "./addonSettings.mjs";
-import resizeImage from "./resizeImage.mjs";
+import generateRandomString from "./modules/generateRandomString.mjs";
+import fetchPlus from "./modules/fetchPlus.mjs";
+import addonSettings from "./modules/addonSettings.mjs";
+import resizeImage from "./modules/resizeImage.mjs";
 
 if (!window.browser) {
     window.browser = chrome;

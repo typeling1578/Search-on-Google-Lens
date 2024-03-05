@@ -41,7 +41,7 @@
         }
     ],
     "web_accessible_resources": [
-        "touch_start_event_blocking.js",
+        "injects/touch_start_event_blocking.js",
         "loading.svg"
     ],
     "background": {

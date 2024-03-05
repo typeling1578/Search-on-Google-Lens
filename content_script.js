@@ -4,7 +4,7 @@ if (!window.browser) {
 
 if (location.hostname == "lens.google.com") {
     let sc = document.createElement("script");
-    sc.src = browser.runtime.getURL("touch_start_event_blocking.js");
+    sc.src = browser.runtime.getURL("injects/touch_start_event_blocking.js");
     document.documentElement.appendChild(sc);
 }
 

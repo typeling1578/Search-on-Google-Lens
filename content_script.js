@@ -19,7 +19,7 @@ browser.runtime.onMessage.addListener(function (message) {
             <div id="search_on_google_lens_elem" style="position: fixed; text-align: center; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 1000000;">
                 <div style="position: absolute; top: 50%; left: 50%; color: white; transform: translate(-50%, -50%); font-size: 50px; white-space: nowrap;">
                     <img style="width: 60px; height: 60px;" src="${browser.runtime.getURL("loading.svg")}"></img>
-                    <div>${browser.i18n.getMessage("fetchingImage")}</div>
+                    <div>${message.thinking ? "🤔" : browser.i18n.getMessage("fetchingImage")}</div>
                 </div>
             </div>
             `;
@@ -27,7 +27,7 @@ browser.runtime.onMessage.addListener(function (message) {
             break;
         case "image-get-end":
             elem.querySelector("div > div > div")
-                .innerText = browser.i18n.getMessage("sendingImage");
+                .innerText = message.thinking ? "🤔" : browser.i18n.getMessage("sendingImage");
             break;
         case "google-post-end":
             elem.remove();

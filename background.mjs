@@ -25,7 +25,10 @@ browser.webRequest.onBeforeSendHeaders.addListener(
 );
 
 async function search_on_google_lens(image_url, tab) {
-    browser.tabs.sendMessage(tab.id, { type: "load-start" });
+    browser.tabs.sendMessage(tab.id, {
+        type: "load-start",
+        thinking: image_url.startsWith(location.origin)
+    });
 
     const image_url_obj = new URL(tab.url);
 
@@ -65,7 +68,10 @@ async function search_on_google_lens(image_url, tab) {
             throw e;
         });
 
-    browser.tabs.sendMessage(tab.id, { type: "image-get-end" });
+    browser.tabs.sendMessage(tab.id, {
+        type: "image-get-end",
+        thinking: image_url.startsWith(location.origin)
+    });
 
     const image_data_form = new FormData();
     image_data_form.set("encoded_image", image_data_processed);
@@ -115,7 +121,8 @@ browser.browserAction.onClicked.addListener(function () {
 browser.contextMenus.create({
     id: "image_right_click_selection",
     title: browser.i18n.getMessage("browserAction"),
-    contexts: ["image"]
+    contexts: ["image"],
+    targetUrlPatterns: ["*://*/*", `${location.origin}/*`]
 });
 
 browser.contextMenus.onClicked.addListener(function (info, tab) {

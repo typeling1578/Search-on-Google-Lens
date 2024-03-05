@@ -27,62 +27,69 @@ browser.webRequest.onBeforeSendHeaders.addListener(
 async function search_on_google_lens(image_url, tab) {
     browser.tabs.sendMessage(tab.id, { type: "load-start" });
 
-    const url_obj = new URL(tab.url);
+    const image_url_obj = new URL(tab.url);
 
-    const image_data = await new Promise(resolve => {
-        fetchPlus(image_url, {
-            headers: {
-                "Referer": url_obj.href,
-                "Origin": url_obj.origin,
+    const image_data = await fetchPlus(
+            image_url,
+            {
+                headers: {
+                    "Referer": image_url_obj.href,
+                    "Origin": image_url_obj.origin,
+                }
             }
-        }).then(res => {
+        )
+        .then(res => {
             if (res.status === 200) {
                 return res.blob();
             } else {
                 throw new Error(`${res.status} ${res.statusText}`);
             }
-        }).then(data =>
-            resolve(data)
-        ).catch(e => {
+        })
+        .then(data => data)
+        .catch(e => {
             browser.tabs.sendMessage(tab.id, { type: "image-get-error" });
             throw e;
         });
-    });
-    let image_data_processed;
-    try {
-        image_data_processed = await resizeImage(image_data, {
-            mode: "maxSize",
-            maxWidth: 1000,
-            maxHeight: 1000,
-            forceEncode: true,
+
+    const image_data_processed = await resizeImage(
+            image_data,
+            {
+                mode: "maxSize",
+                maxWidth: 1000,
+                maxHeight: 1000,
+                forceEncode: true,
+            }
+        )
+        .catch(e => {
+            browser.tabs.sendMessage(tab.id, { type: "image-get-error" });
+            throw e;
         });
-    } catch (e) {
-        browser.tabs.sendMessage(tab.id, { type: "image-get-error" });
-        throw e;
-    }
+
     browser.tabs.sendMessage(tab.id, { type: "image-get-end" });
 
-    let image_data_form = new FormData();
+    const image_data_form = new FormData();
     image_data_form.set("encoded_image", image_data_processed);
     image_data_form.set("image_url", `https://${generateRandomString(12)}.com/images/${generateRandomString(12)}`); // Send fake URL
     image_data_form.set("sbisrc", "Chromium 98.0.4725.0 Windows");
-    const data = await new Promise(resolve => {
-        fetch(`https://lens.google.com/upload?ep=ccm&s=&st=${generateRandomString(12)}`, {
-            method: "POST",
-            body: image_data_form,
-        }).then(res => {
+    const data = await fetch(
+            `https://lens.google.com/upload?ep=ccm&s=&st=${generateRandomString(12)}`,
+            {
+                method: "POST",
+                body: image_data_form,
+            }
+        )
+        .then(res => {
             if (res.status === 200) {
                 return res.text();
             } else {
                 throw new Error(`${res.status} ${res.statusText}`);
             }
-        }).then(data =>
-            resolve(data)
-        ).catch(e => {
+        })
+        .then(data => data)
+        .catch(e => {
             browser.tabs.sendMessage(tab.id, { type: "google-post-error" });
             throw e;
         });
-    });
 
     const doc = (new DOMParser()).parseFromString(data, "text/html");
     const url = doc?.querySelector('meta[http-equiv="refresh"]')?.getAttribute("content")
@@ -92,8 +99,8 @@ async function search_on_google_lens(image_url, tab) {
         browser.tabs.sendMessage(tab.id, { type: "google-post-end" });
         browser.tabs.create({
             url: new URL(url, "https://lens.google.com").href,
-            windowId: tab.windowId,
-            openerTabId: tab.id,
+            windowId: tab.windowId ?? undefined,
+            openerTabId: tab.id ?? undefined,
             active: !settings.get("local", "newTabsLoadInBackground"),
         });
     } else {
@@ -112,17 +119,25 @@ browser.contextMenus.create({
 });
 
 browser.contextMenus.onClicked.addListener(function (info, tab) {
+    console.log("[Background Scripts]", `context menus clicked: ${info.menuItemId}`);
+
     switch (info.menuItemId) {
         case "image_right_click_selection":
             search_on_google_lens(info.srcUrl, tab);
+            break;
+        default:
             break;
     }
 });
 
 browser.runtime.onMessage.addListener(function (message, sender) {
+    console.log("[Background Scripts]", `message received: ${message.type}`);
+
     switch (message.type) {
         case "send-image":
             search_on_google_lens(message.src, sender.tab);
+            break;
+        default:
             break;
     }
 });

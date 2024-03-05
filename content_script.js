@@ -8,86 +8,39 @@ if (location.hostname == "lens.google.com") {
     document.documentElement.appendChild(sc);
 }
 
-function inject_loading_element() {
-    let elem = document.createElement("div");
-    elem.id = "search_on_google_lens_elem";
-    elem.style.position = "fixed";
-    elem.style.textAlign = "center";
-    elem.style.top = "0";
-    elem.style.left = "0;"
-    elem.style.width = "100%";
-    elem.style.height = "100%";
-    elem.style.backgroundColor = "rgba(0,0,0,0.6)";
-    elem.style.zIndex = "1000000";
-
-    let main_elem = document.createElement("div");
-    main_elem.style.position = "absolute";
-    main_elem.style.top = "50%";
-    main_elem.style.left = "50%";
-    main_elem.style.color = "white"
-    main_elem.style.transform = "translate(-50%,-50%)";
-    main_elem.style.fontSize = "50px";
-    main_elem.style.whiteSpace = "nowrap";
-
-    let main_elem_img = document.createElement("img");
-    main_elem_img.style.width = "60px";
-    main_elem_img.style.height = "60px";
-    main_elem_img.src = browser.runtime.getURL("loading.svg");
-
-    let main_elem_text = document.createElement("div");
-    main_elem_text.innerText = browser.i18n.getMessage("fetchingImage");
-
-    main_elem.appendChild(main_elem_img);
-    main_elem.appendChild(main_elem_text);
-
-    elem.appendChild(main_elem);
-
-    document.body.appendChild(elem);
-}
-
-function image_get_end_elem_update() {
-    let elem = document.getElementById("search_on_google_lens_elem").querySelector("div > div > div");
-    elem.innerText = browser.i18n.getMessage("sendingImage");
-}
-
-function google_post_end_elem_remove() {
-    let elem = document.getElementById("search_on_google_lens_elem");
-    elem.remove();
-}
-
-function image_get_error_elem_remove() {
-    let elem = document.getElementById("search_on_google_lens_elem");
-    elem.remove();
-    alert(browser.i18n.getMessage("fetchingImageError"));
-}
-
-function google_post_error_elem_remove() {
-    let elem = document.getElementById("search_on_google_lens_elem");
-    elem.remove();
-    alert(browser.i18n.getMessage("sendingImageError"));
-}
-
 browser.runtime.onMessage.addListener(function (message) {
+    console.log("[Content Scripts]", `message received: ${message.type}`);
+
+    const elem = document.getElementById("search_on_google_lens_elem");
+
     switch (message.type) {
         case "load-start":
-            console.log("load-start");
-            inject_loading_element();
+            const elem_string = `
+            <div id="search_on_google_lens_elem" style="position: fixed; text-align: center; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 1000000;">
+                <div style="position: absolute; top: 50%; left: 50%; color: white; transform: translate(-50%, -50%); font-size: 50px; white-space: nowrap;">
+                    <img style="width: 60px; height: 60px;" src="${browser.runtime.getURL("loading.svg")}"></img>
+                    <div>${browser.i18n.getMessage("fetchingImage")}</div>
+                </div>
+            </div>
+            `;
+            document.body.insertAdjacentHTML("beforeend", elem_string);
             break;
         case "image-get-end":
-            console.log("image-get-end");
-            image_get_end_elem_update();
+            elem.querySelector("div > div > div")
+                .innerText = browser.i18n.getMessage("sendingImage");
             break;
         case "google-post-end":
-            console.log("google-post-end");
-            google_post_end_elem_remove();
+            elem.remove();
             break;
         case "image-get-error":
-            console.log("image-get-error");
-            image_get_error_elem_remove();
+            elem.remove();
+            alert(browser.i18n.getMessage("fetchingImageError"));
             break;
         case "google-post-error":
-            console.log("google-post-error");
-            google_post_error_elem_remove();
+            elem.remove();
+            alert(browser.i18n.getMessage("sendingImageError"));
+            break;
+        default:
             break;
     }
-})
+});

@@ -1,4 +1,4 @@
-import addonSettings from "./addonSettings.mjs";
+import addonSettings from "./modules/addonSettings.mjs";
 
 if (!window.browser) {
     window.browser = chrome;

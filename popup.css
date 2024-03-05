@@ -7,21 +7,6 @@ body {
 }
 
 body {
-    --background-color: #f7f9fc;
-    --background-color-2: #ffffff;
-    --text-color: #1f1f1f;
-    --primary-color: #c2e7ff;
-    --primary-text-color: #1f1f1f;
-}
-@media (prefers-color-scheme: dark) {
-    body {
-        --background-color: #202124;
-        --background-color-2: #1b1b1b;
-        --text-color: #e8eaed;
-    }
-}
-
-body {
     background-color: var(--background-color);
     color: var(--text-color);
 }

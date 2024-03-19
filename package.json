@@ -1,0 +1,26 @@
+{
+  "name": "search-on-google-lens",
+  "version": "1.0.0",
+  "description": "This is an add-on that allows you to search for images on a website with Google Lens.",
+  "main": "index.js",
+  "scripts": {
+    "build-firefox": "node scripts/build.mjs firefox",
+    "build-chromium": "node scripts/build.mjs chromium"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/typeling1578/Search-on-Google-Lens.git"
+  },
+  "author": "typeling1578",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/typeling1578/Search-on-Google-Lens/issues"
+  },
+  "homepage": "https://github.com/typeling1578/Search-on-Google-Lens#readme",
+  "dependencies": {
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "preprocess": "^3.2.0"
+  }
+}

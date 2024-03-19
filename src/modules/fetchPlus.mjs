@@ -1,13 +1,14 @@
 import generateRandomString from "./generateRandomString.mjs";
 
-if (!window.browser) {
-    window.browser = chrome;
-}
+//@if BROWSER="chromium"
+const browser = chrome;
+//@endif
 
 export default async function(url, options = {}) {
     const requestId = generateRandomString(12);
 
     let fetch_options = Object.assign({}, options);
+//@if BROWSER="firefox"
     fetch_options.headers = {
         "Fetch-Plus-Request-Id": requestId,
     };
@@ -46,11 +47,14 @@ export default async function(url, options = {}) {
         { urls: [url] },
         ["blocking", "requestHeaders"]
     );
+//@endif
 
     try {
         return await fetch(url, fetch_options);
     } catch (e) {
+//@if BROWSER="firefox"
         browser.webRequest.onBeforeSendHeaders.removeListener(listener);
+//@endif
         throw e;
     }
 }

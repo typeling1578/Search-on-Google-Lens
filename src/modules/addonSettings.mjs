@@ -1,6 +1,6 @@
-if (!window.browser) {
-    window.browser = chrome;
-}
+//@if BROWSER="chromium"
+const browser = chrome;
+//@endif
 
 const LOCAL_DEFAULT_SETTINGS = {
     "newTabsLoadInBackground": false,

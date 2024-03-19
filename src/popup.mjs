@@ -1,8 +1,8 @@
 import addonSettings from "./modules/addonSettings.mjs";
 
-if (!window.browser) {
-    window.browser = chrome;
-}
+//@if BROWSER="chromium"
+const browser = chrome;
+//@endif
 
 const settings = new addonSettings();
 await settings.init();

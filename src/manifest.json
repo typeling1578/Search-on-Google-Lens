@@ -1,27 +1,33 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "__MSG_extensionName__",
     "version": "1.6.2",
     "description": "__MSG_extensionDescription__",
     "default_locale": "en",
-    "applications": {
+//@if BROWSER="firefox"
+    "browser_specific_settings": {
         "gecko": {
             "id": "{56b8308e-566b-4dc0-9957-f6341ceb8552}",
             "strict_min_version": "115.0"
         }
     },
+//@endif
     "icons": {
         "48": "icons/icon-48x48.png",
         "96": "icons/icon-96x96.png"
     },
     "permissions": [
+//@if BROWSER="firefox"
         "webRequest",
         "webRequestBlocking",
-        "<all_urls>",
+//@endif
         "contextMenus",
         "storage"
     ],
-    "browser_action": {
+    "host_permissions": [
+        "*://*/*"
+    ],
+    "action": {
         "default_title": "__MSG_browserAction__"
     },
     "options_ui": {
@@ -31,9 +37,7 @@
         {
             "run_at": "document_start",
             "matches": [
-                "http://*/*",
-                "https://*/*",
-                "file:///*"
+                "*://*/*"
             ],
             "js": [
                 "content_script.js"
@@ -41,10 +45,23 @@
         }
     ],
     "web_accessible_resources": [
-        "injects/touch_start_event_blocking.js",
-        "loading.svg"
+        {
+            "resources": [
+                "injects/touch_start_event_blocking.js",
+                "loading.svg"
+            ],
+            "matches": [
+                "*://*/*"
+            ]
+        }
     ],
     "background": {
-        "page": "background.html"
+//@if BROWSER="firefox"
+        "scripts": ["background.mjs"],
+//@endif
+//@if BROWSER="chromium"
+        "service_worker": "background.mjs",
+//@endif
+        "type": "module"
     }
 }

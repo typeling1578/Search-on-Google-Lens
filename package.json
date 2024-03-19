@@ -17,10 +17,8 @@
     "url": "https://github.com/typeling1578/Search-on-Google-Lens/issues"
   },
   "homepage": "https://github.com/typeling1578/Search-on-Google-Lens#readme",
-  "dependencies": {
-    "glob": "^10.3.10"
-  },
   "devDependencies": {
+    "glob": "^10.3.10",
     "preprocess": "^3.2.0"
   }
 }

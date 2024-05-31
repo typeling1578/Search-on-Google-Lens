@@ -77,7 +77,7 @@ async function search_on_google_lens(image_url, tab) {
     image_data_form.set("encoded_image", image_data_processed);
     image_data_form.set("image_url", `https://${generateRandomString(12)}.com/images/${generateRandomString(12)}`); // Send fake URL
     image_data_form.set("sbisrc", "Chromium 98.0.4725.0 Windows");
-    const data = await fetch(
+    const result = await fetch(
             `https://lens.google.com/upload?ep=ccm&s=&st=${generateRandomString(12)}`,
             {
                 method: "POST",
@@ -86,7 +86,7 @@ async function search_on_google_lens(image_url, tab) {
         )
         .then(res => {
             if (res.status === 200) {
-                return res.text();
+                return res;
             } else {
                 throw new Error(`${res.status} ${res.statusText}`);
             }
@@ -97,10 +97,7 @@ async function search_on_google_lens(image_url, tab) {
             throw e;
         });
 
-    const doc = (new DOMParser()).parseFromString(data, "text/html");
-    const url = doc?.querySelector('meta[http-equiv="refresh"]')?.getAttribute("content")
-                ?.replace(" ", "")?.split(";")?.filter(str => str.startsWith("url="))?.slice(-1)[0]?.slice(4);
-
+    const url = result.url;
     if (url) {
         browser.tabs.sendMessage(tab.id, { type: "google-post-end" });
         browser.tabs.create({

@@ -77,11 +77,15 @@ async function search_on_google_lens(image_url, tab) {
     image_data_form.set("encoded_image", image_data_processed);
     image_data_form.set("image_url", `https://${generateRandomString(12)}.com/images/${generateRandomString(12)}`); // Send fake URL
     image_data_form.set("sbisrc", "Chromium 98.0.4725.0 Windows");
-    const result = await fetch(
+    const result = await fetchPlus(
             `https://lens.google.com/upload?ep=ccm&s=&st=${generateRandomString(12)}`,
             {
                 method: "POST",
                 body: image_data_form,
+                headers: {
+                    "Origin": "https://lens.google.com",
+                    "Referer": "https://lens.google.com/",
+                }
             }
         )
         .then(res => {

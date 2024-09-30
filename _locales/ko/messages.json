@@ -1,0 +1,47 @@
+{
+  "selectImageFile": {
+    "message": "이미지 파일 선택하기"
+  },
+  "dragAndDrop": {
+    "message": "파일을 드래그 앤 드롭 하거나"
+  },
+  "fetchingImage": {
+    "message": "이미지 가져오는 중..."
+  },
+  "fetchingImageError": {
+    "message": "이미지 가져오기 실패."
+  },
+  "sendingImage": {
+    "message": "Google로 이미지 전송중..."
+  },
+  "sendingImageError": {
+    "message": "Google로 이미지 전송 실패"
+  },
+  "search": {
+    "message": "검색"
+  },
+  "settings": {
+    "message": "설정"
+  },
+  "aboutAddon": {
+    "message": "소개"
+  },
+  "donate": {
+    "message": "기부"
+  },
+  "newTabsLoadInBackgroundSetting": {
+    "message": "검색 결과가 새 탭에서 열리면 즉시 해당 탭으로 전환합니다."
+  },
+  "tipsRightClick": {
+    "message": "팁: 웹사이트의 이미지를 마우스 오른쪽 버튼으로 클릭하면 메뉴에서 해당 이미지를 검색할 수 있습니다."
+  },
+  "extensionName": {
+    "message": "Google Lens에서 검색"
+  },
+  "extensionDescription": {
+    "message": "Google 렌즈를 이용해 웹사이트 이미지를 검색할 수 있는 애드온입니다."
+  },
+  "browserAction": {
+    "message": "Google Lens에서 검색"
+  }
+}

@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const w = window.wrappedJSObject;
+(function () {
+    const w = window.wrappedJSObject;
 
-w.document.documentElement.addEventListener(
-    "touchstart",
-    cloneInto(function (e) {
-        e.stopImmediatePropagation();
-    }, w, { cloneFunctions: true }),
-    true,
-);
+    w.document.documentElement.addEventListener(
+        "touchstart",
+        cloneInto(function (e) {
+            e.stopImmediatePropagation();
+        }, w, { cloneFunctions: true }),
+        true,
+    );
+})();

@@ -29,6 +29,8 @@ export default class {
         this.remote = Object.assign({}, DEFAULT_SETTINGS);
 
         await this.sync();
+
+        this.initialized = true;
     }
     async sync() {
         if (!this.initializing && !this.initialized) return;

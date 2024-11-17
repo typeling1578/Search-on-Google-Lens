@@ -5,10 +5,4 @@
 
 const w = window.wrappedJSObject;
 
-w.document.documentElement.addEventListener(
-    "touchstart",
-    cloneInto(function (e) {
-        e.stopImmediatePropagation();
-    }, w, { cloneFunctions: true }),
-    true,
-);
+w.Number.isFinite = cloneInto(function() { return true }, w, { cloneFunctions: true });

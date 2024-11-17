@@ -7,12 +7,6 @@ if (!window.browser) {
     window.browser = chrome;
 }
 
-if (location.hostname == "lens.google.com") {
-    let sc = document.createElement("script");
-    sc.src = browser.runtime.getURL("injects/touch_start_event_blocking.js");
-    document.documentElement.appendChild(sc);
-}
-
 browser.runtime.onMessage.addListener(function (message) {
     console.log("[Content Scripts]", `message received: ${message.type}`);
 

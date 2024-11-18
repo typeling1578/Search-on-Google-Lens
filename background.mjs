@@ -8,6 +8,7 @@ import fetchPlus from "./modules/fetchPlus.mjs";
 import addonSettings from "./modules/addonSettings.mjs";
 import resizeImage from "./modules/resizeImage.mjs";
 import remoteSettings from "./modules/remoteSettings.mjs";
+import ContentScriptRegister from "./modules/contentScriptRegister.mjs";
 
 if (!window.browser) {
     window.browser = chrome;
@@ -18,6 +19,7 @@ await settings.init();
 
 const settings_remote = new remoteSettings();
 await settings_remote.init();
+setInterval(async () => await settings_remote.sync(), 1 * 60 * 1000); // 30 minutes
 
 // change user-agent
 browser.webRequest.onBeforeSendHeaders.addListener(
@@ -159,55 +161,42 @@ browser.runtime.onMessage.addListener(function (message, sender) {
     }
 });
 
-class ContentScriptRegister {
-    constructor(key, script_options) {
-        this.key = key;
-        this.script_options = script_options;
-        this.registed = null;
-
-        let wait = new Promise((resolve) => { resolve() });
-        if (settings_remote.get(this.key)) {
-            wait = this.#load();
-        }
-
-        settings_remote.addListener(async (settings_key, settings) => {
-            await wait;
-            if (this.key == settings_key) {
-                if (settings[key]) {
-                    await this.#load();
-                } else {
-                    this.#unload();
-                }
-            }
-        });
-    }
-    async #load() {
-        if (!this.registed) {
-            this.registed = await browser.contentScripts.register(this.script_options);
-        }
-    }
-    #unload() {
-        if (this.registed) {
-            this.registed.unregister();
-            this.registed = null;
-        }
-    }
-}
-
-new ContentScriptRegister(
-    "injectTouchStartEventBlockingScript",
+const touchStartEventBlockingScriptRegister = new ContentScriptRegister(
     {
         js: [{ file: "/injects/touch_start_event_blocking.js" }],
         matches: ["*://lens.google.com/*"],
         runAt: "document_start",
     },
 );
-
-new ContentScriptRegister(
-    "injectPreventDetectFirefoxBrowserScript",
+const preventDetectFirefoxBrowser = new ContentScriptRegister(
     {
         js: [{ file: "/injects/prevent_detect_firefox_browser.js" }],
         matches: ["*://lens.google.com/*"],
         runAt: "document_start",
     },
 );
+
+async function onRemoteSettingsChange(key, settings) {
+    if (key == "injectTouchStartEventBlockingScript") {
+        if (settings[key]) {
+            console.log("Load \"touch_start_event_blocking.js\"");
+            await touchStartEventBlockingScriptRegister.load();
+        } else {
+            console.log("Unload \"touch_start_event_blocking.js\"");
+            await touchStartEventBlockingScriptRegister.unload();
+        }
+    }
+    if (key == "injectPreventDetectFirefoxBrowserScript") {
+        if (settings[key]) {
+            console.log("Load \"prevent_detect_firefox_browser.js\"");
+            await preventDetectFirefoxBrowser.load();
+        } else {
+            console.log("Unload \"prevent_detect_firefox_browser.js\"");
+            await preventDetectFirefoxBrowser.unload();
+        }
+    }
+}
+settings_remote.addListener(onRemoteSettingsChange);
+for (const key of Object.keys(settings_remote.getAll())) { // init
+    onRemoteSettingsChange(key, settings_remote.getAll());
+}

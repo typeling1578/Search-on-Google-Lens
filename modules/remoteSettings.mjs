@@ -15,18 +15,20 @@ const DEFAULT_SETTINGS = {
 };
 
 export default class {
+    #remote;
+
     constructor() {
         this.initializing = false;
         this.initialized = false;
         this._listeners = [];
 
-        this.remote = [];
+        this.#remote = [];
     }
     async init() {
         if (this.initializing || this.initialized) return;
         this.initializing = true;
 
-        this.remote = Object.assign({}, DEFAULT_SETTINGS);
+        this.#remote = Object.assign({}, DEFAULT_SETTINGS);
 
         await this.sync();
 
@@ -55,31 +57,35 @@ export default class {
             return false;
         }
 
-        const new_remote = Object.assign({}, DEFAULT_SETTINGS, settings);
+        const old_remote = Object.assign({}, this.#remote);
+        this.#remote = Object.assign({}, DEFAULT_SETTINGS, settings);
+
         if (this.initialized) {
             const key_sets = new Set();
 
-            for (const key of Object.keys(this.remote)) {
+            for (const key of Object.keys(old_remote)) {
                 key_sets.add(key);
             }
-            for (const key of Object.keys(new_remote)) {
+            for (const key of Object.keys(this.#remote)) {
                 key_sets.add(key);
             }
 
             for (const key of key_sets) {
-                if (this.remote[key] !== new_remote[key]) {
+                if (old_remote[key] !== this.#remote[key]) {
                     for (const listener of this._listeners) {
-                        listener.callback(key, new_remote);
+                        listener.callback(key, this.#remote);
                     }
                 }
             }
         }
-        this.remote = new_remote;
 
         return true;
     }
     get(key) {
-        return this.remote[key];
+        return this.#remote[key];
+    }
+    getAll() {
+        return Object.assign({}, this.#remote);
     }
     addListener(callback) {
         if (!this.initialized) throw new Error("must be initialized");

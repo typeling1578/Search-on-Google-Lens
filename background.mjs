@@ -19,7 +19,7 @@ await settings.init();
 
 const settings_remote = new remoteSettings();
 await settings_remote.init();
-setInterval(async () => await settings_remote.sync(), 1 * 60 * 1000); // 30 minutes
+setInterval(async () => await settings_remote.sync(), 30 * 60 * 1000); // 30 minutes
 
 // change user-agent
 browser.webRequest.onBeforeSendHeaders.addListener(

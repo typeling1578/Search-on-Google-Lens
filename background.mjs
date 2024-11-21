@@ -120,9 +120,11 @@ async function search_on_google_lens(image_url, tab) {
         reader.readAsDataURL(image_data_processed);
     });
 
-    browser.tabs.sendMessage(tab.id, {
-        type: "open-new-tab",
-        data_url: image_data_processed_dataurl,
+    browser.tabs.create({
+        url: `${browser.runtime.getURL("/post_to_lens.html")}?image_data_url=${encodeURIComponent(image_data_processed_dataurl)}`,
+        windowId: tab.windowId ?? undefined,
+        openerTabId: tab.id ?? undefined,
+        active: !settings.get("local", "newTabsLoadInBackground"),
     });
 
     browser.tabs.sendMessage(tab.id, { type: "google-post-end" });

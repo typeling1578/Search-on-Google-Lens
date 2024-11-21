@@ -39,38 +39,6 @@ browser.runtime.onMessage.addListener(async function (message) {
             elem.remove();
             alert(browser.i18n.getMessage("sendingImageError"));
             break;
-        case "open-new-tab":
-            const container = document.createElement("div");
-            container.style.display = "none";
-            document.body.appendChild(container);
-
-            const form = document.createElement("form");
-            form.action = `https://lens.google.com/v3/upload?ep=ccm&s=&st=${Date.now()}`;
-            form.method = "POST";
-            form.enctype = "multipart/form-data";
-            form.target = "_blank";
-            container.appendChild(form);
-
-            const file_input = document.createElement("input");
-            file_input.type = "file";
-            file_input.name = "encoded_image";
-            form.appendChild(file_input);
-
-            const pid_input = document.createElement("input");
-            pid_input.type = "text";
-            pid_input.name = "processed_image_dimensions";
-            pid_input.value = "1000,1000";
-
-            const result = await fetch(message.data_url);
-            const file = new Blob([await result.arrayBuffer()]);
-            const data_transfer = new DataTransfer();
-            const file_obj = new File([file], "image.jpg", { type: "image/jpeg" });
-            data_transfer.items.add(file_obj);
-            file_input.files = data_transfer.files;
-
-            form.submit();
-
-            container.remove();
         default:
             break;
     }

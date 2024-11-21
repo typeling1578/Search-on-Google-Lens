@@ -35,6 +35,35 @@ browser.webRequest.onBeforeSendHeaders.addListener(
     ["blocking", "requestHeaders"]
 );
 
+browser.webRequest.onBeforeSendHeaders.addListener(
+    function(e) {
+        let requestHeaders = e.requestHeaders;
+
+        requestHeaders =
+            requestHeaders.filter(requestHeader =>
+                requestHeader.name.toLowerCase() !== "Origin".toLowerCase()
+            );
+        requestHeaders =
+            requestHeaders.filter(requestHeader =>
+                requestHeader.name.toLowerCase() !== "Referer".toLowerCase()
+            );
+
+        requestHeaders.push({
+            name: "Referer",
+            value: "https://lens.google.com/"
+        });
+
+        requestHeaders.push({
+            name: "Origin",
+            value: "https://lens.google.com"
+        });
+
+        return { requestHeaders }
+    },
+    { urls: ["https://lens.google.com/v3/*"] },
+    ["blocking", "requestHeaders"]
+);
+
 async function search_on_google_lens(image_url, tab) {
     browser.tabs.sendMessage(tab.id, {
         type: "load-start",
@@ -84,46 +113,19 @@ async function search_on_google_lens(image_url, tab) {
         thinking: image_url.startsWith(location.origin)
     });
 
-    const image_data_form = new FormData();
-    image_data_form.set("encoded_image", image_data_processed);
-    image_data_form.set("image_url", `https://${generateRandomString(12)}.com/images/${generateRandomString(12)}`); // Send fake URL
-    image_data_form.set("sbisrc", "Chromium 98.0.4725.0 Windows");
-    const result = await fetchPlus(
-            `https://lens.google.com/upload?ep=ccm&s=&st=${generateRandomString(12)}`,
-            {
-                method: "POST",
-                body: image_data_form,
-                headers: {
-                    "Origin": "https://lens.google.com",
-                    "Referer": "https://lens.google.com/",
-                }
-            }
-        )
-        .then(res => {
-            if (res.status === 200) {
-                return res;
-            } else {
-                throw new Error(`${res.status} ${res.statusText}`);
-            }
-        })
-        .then(data => data)
-        .catch(e => {
-            browser.tabs.sendMessage(tab.id, { type: "google-post-error" });
-            throw e;
-        });
+    const image_data_processed_dataurl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(image_data_processed);
+    });
 
-    const url = result.url;
-    if (url) {
-        browser.tabs.sendMessage(tab.id, { type: "google-post-end" });
-        browser.tabs.create({
-            url: new URL(url, "https://lens.google.com").href,
-            windowId: tab.windowId ?? undefined,
-            openerTabId: tab.id ?? undefined,
-            active: !settings.get("local", "newTabsLoadInBackground"),
-        });
-    } else {
-        throw new Error(`URL is not included in the result`);
-    }
+    browser.tabs.sendMessage(tab.id, {
+        type: "open-new-tab",
+        data_url: image_data_processed_dataurl,
+    });
+
+    browser.tabs.sendMessage(tab.id, { type: "google-post-end" });
 }
 
 browser.browserAction.onClicked.addListener(function () {

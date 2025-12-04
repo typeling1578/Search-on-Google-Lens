@@ -22,21 +22,39 @@ await settings_remote.init();
 setInterval(async () => await settings_remote.sync(), 30 * 60 * 1000); // 30 minutes
 
 // change user-agent
-browser.webRequest.onBeforeSendHeaders.addListener(
-    function(e) {
+const changeLensGoogleComUserAgentRegister = class {
+    static load() {
+        browser.webRequest.onBeforeSendHeaders.addListener(
+            this.#callback,
+            { urls: ["https://lens.google.com/*"] },
+            ["blocking", "requestHeaders"]
+        );
+    }
+    static unload() {
+        browser.webRequest.onBeforeSendHeaders.removeListener(this.#callback);
+    }
+    static #callback(e) {
         e.requestHeaders.forEach(function (header) {
             if (header.name.toLowerCase() === "user-agent") {
                 header.value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4725.0 Safari/537.36";
             }
         });
         return { requestHeaders: e.requestHeaders };
-    },
-    { urls: ["https://lens.google.com/*"] },
-    ["blocking", "requestHeaders"]
-);
+    }
+};
 
-browser.webRequest.onBeforeSendHeaders.addListener(
-    function(e) {
+const rewriteLensGoogleComV3ApiRefererAndOriginRegister = class {
+    static load() {
+        browser.webRequest.onBeforeSendHeaders.addListener(
+            this.#callback,
+            { urls: ["https://lens.google.com/v3/*"] },
+            ["blocking", "requestHeaders"]
+        );
+    }
+    static unload() {
+        browser.webRequest.onBeforeSendHeaders.removeListener(this.#callback);
+    }
+    static #callback(e) {
         let requestHeaders = e.requestHeaders;
 
         requestHeaders =
@@ -59,10 +77,8 @@ browser.webRequest.onBeforeSendHeaders.addListener(
         });
 
         return { requestHeaders }
-    },
-    { urls: ["https://lens.google.com/v3/*"] },
-    ["blocking", "requestHeaders"]
-);
+    }
+};
 
 async function search_on_google_lens(image_url, tab) {
     browser.tabs.sendMessage(tab.id, {
@@ -197,6 +213,24 @@ async function onRemoteSettingsChange(key, settings) {
         } else {
             console.log("Unload \"prevent_detect_firefox_browser.js\"");
             await preventDetectFirefoxBrowser.unload();
+        }
+    }
+    if (key == "changeLensGoogleComUserAgent") {
+        if (settings[key]) {
+            console.log("Load \"changeLensGoogleComUserAgent\"");
+            changeLensGoogleComUserAgentRegister.load();
+        } else {
+            console.log("Unload \"changeLensGoogleComUserAgent\"");
+            changeLensGoogleComUserAgentRegister.unload();
+        }
+    }
+    if (key == "rewriteLensGoogleComV3ApiRefererAndOrigin") {
+        if (settings[key]) {
+            console.log("Load \"rewriteLensGoogleComV3ApiRefererAndOrigin\"");
+            rewriteLensGoogleComV3ApiRefererAndOriginRegister.load();
+        } else {
+            console.log("Unload \"rewriteLensGoogleComV3ApiRefererAndOrigin\"");
+            rewriteLensGoogleComV3ApiRefererAndOriginRegister.unload();
         }
     }
 }

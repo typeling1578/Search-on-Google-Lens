@@ -12,6 +12,8 @@ if (!window.browser) {
 const DEFAULT_SETTINGS = {
     "injectTouchStartEventBlockingScript": true,
     "injectPreventDetectFirefoxBrowserScript": false,
+    "changeLensGoogleComUserAgent": false,
+    "rewriteLensGoogleComV3ApiRefererAndOrigin": false,
 };
 
 export default class {

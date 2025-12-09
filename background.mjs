@@ -7,8 +7,6 @@ import generateRandomString from "./modules/generateRandomString.mjs";
 import fetchPlus from "./modules/fetchPlus.mjs";
 import addonSettings from "./modules/addonSettings.mjs";
 import resizeImage from "./modules/resizeImage.mjs";
-import remoteSettings from "./modules/remoteSettings.mjs";
-import ContentScriptRegister from "./modules/contentScriptRegister.mjs";
 
 if (!window.browser) {
     window.browser = chrome;
@@ -16,69 +14,6 @@ if (!window.browser) {
 
 const settings = new addonSettings();
 await settings.init();
-
-const settings_remote = new remoteSettings();
-await settings_remote.init();
-setInterval(async () => await settings_remote.sync(), 30 * 60 * 1000); // 30 minutes
-
-// change user-agent
-const changeLensGoogleComUserAgentRegister = class {
-    static load() {
-        browser.webRequest.onBeforeSendHeaders.addListener(
-            this.#callback,
-            { urls: ["https://lens.google.com/*"] },
-            ["blocking", "requestHeaders"]
-        );
-    }
-    static unload() {
-        browser.webRequest.onBeforeSendHeaders.removeListener(this.#callback);
-    }
-    static #callback(e) {
-        e.requestHeaders.forEach(function (header) {
-            if (header.name.toLowerCase() === "user-agent") {
-                header.value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4725.0 Safari/537.36";
-            }
-        });
-        return { requestHeaders: e.requestHeaders };
-    }
-};
-
-const rewriteLensGoogleComV3ApiRefererAndOriginRegister = class {
-    static load() {
-        browser.webRequest.onBeforeSendHeaders.addListener(
-            this.#callback,
-            { urls: ["https://lens.google.com/v3/*"] },
-            ["blocking", "requestHeaders"]
-        );
-    }
-    static unload() {
-        browser.webRequest.onBeforeSendHeaders.removeListener(this.#callback);
-    }
-    static #callback(e) {
-        let requestHeaders = e.requestHeaders;
-
-        requestHeaders =
-            requestHeaders.filter(requestHeader =>
-                requestHeader.name.toLowerCase() !== "Origin".toLowerCase()
-            );
-        requestHeaders =
-            requestHeaders.filter(requestHeader =>
-                requestHeader.name.toLowerCase() !== "Referer".toLowerCase()
-            );
-
-        requestHeaders.push({
-            name: "Referer",
-            value: "https://lens.google.com/"
-        });
-
-        requestHeaders.push({
-            name: "Origin",
-            value: "https://lens.google.com"
-        });
-
-        return { requestHeaders }
-    }
-};
 
 async function search_on_google_lens(image_url, tab) {
     browser.tabs.sendMessage(tab.id, {
@@ -180,61 +115,3 @@ browser.runtime.onMessage.addListener(function (message, sender) {
             break;
     }
 });
-
-const touchStartEventBlockingScriptRegister = new ContentScriptRegister(
-    {
-        js: [{ file: "/injects/touch_start_event_blocking.js" }],
-        matches: ["*://lens.google.com/*"],
-        runAt: "document_start",
-    },
-);
-const preventDetectFirefoxBrowser = new ContentScriptRegister(
-    {
-        js: [{ file: "/injects/prevent_detect_firefox_browser.js" }],
-        matches: ["*://lens.google.com/*"],
-        runAt: "document_start",
-    },
-);
-
-async function onRemoteSettingsChange(key, settings) {
-    if (key == "injectTouchStartEventBlockingScript") {
-        if (settings[key]) {
-            console.log("Load \"touch_start_event_blocking.js\"");
-            await touchStartEventBlockingScriptRegister.load();
-        } else {
-            console.log("Unload \"touch_start_event_blocking.js\"");
-            await touchStartEventBlockingScriptRegister.unload();
-        }
-    }
-    if (key == "injectPreventDetectFirefoxBrowserScript") {
-        if (settings[key]) {
-            console.log("Load \"prevent_detect_firefox_browser.js\"");
-            await preventDetectFirefoxBrowser.load();
-        } else {
-            console.log("Unload \"prevent_detect_firefox_browser.js\"");
-            await preventDetectFirefoxBrowser.unload();
-        }
-    }
-    if (key == "changeLensGoogleComUserAgent") {
-        if (settings[key]) {
-            console.log("Load \"changeLensGoogleComUserAgent\"");
-            changeLensGoogleComUserAgentRegister.load();
-        } else {
-            console.log("Unload \"changeLensGoogleComUserAgent\"");
-            changeLensGoogleComUserAgentRegister.unload();
-        }
-    }
-    if (key == "rewriteLensGoogleComV3ApiRefererAndOrigin") {
-        if (settings[key]) {
-            console.log("Load \"rewriteLensGoogleComV3ApiRefererAndOrigin\"");
-            rewriteLensGoogleComV3ApiRefererAndOriginRegister.load();
-        } else {
-            console.log("Unload \"rewriteLensGoogleComV3ApiRefererAndOrigin\"");
-            rewriteLensGoogleComV3ApiRefererAndOriginRegister.unload();
-        }
-    }
-}
-settings_remote.addListener(onRemoteSettingsChange);
-for (const key of Object.keys(settings_remote.getAll())) { // init
-    onRemoteSettingsChange(key, settings_remote.getAll());
-}

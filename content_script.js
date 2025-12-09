@@ -14,19 +14,43 @@ browser.runtime.onMessage.addListener(async function (message) {
 
     switch (message.type) {
         case "load-start":
-            const loading_svg_url = browser.runtime.getURL("loading.svg");
-            const fetching_image_text = message.thinking ? "🤔" : browser.i18n.getMessage("sendingImage");
-            const elem_string = `
-            <div id="search_on_google_lens_elem" style="position: fixed; text-align: center; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 1000000;">
-                <div style="position: absolute; top: 50%; left: 50%; color: white; transform: translate(-50%, -50%); font-size: 50px; white-space: nowrap;">
-                    <img class="sogl-loading-svg" style="width: 60px; height: 60px;" src=""></img>
-                    <div class="sogl-fetching-image-text"></div>
-                </div>
-            </div>
-            `;
-            document.body.insertAdjacentHTML("beforeend", elem_string);
-            document.querySelector("#search_on_google_lens_elem .sogl-loading-svg").src = loading_svg_url;
-            document.querySelector("#search_on_google_lens_elem .sogl-fetching-image-text").innerText = fetching_image_text;
+            const overlay = document.createElement("div");
+            overlay.id = "search_on_google_lens_elem";
+
+            overlay.style.position = "fixed";
+            overlay.style.textAlign = "center";
+            overlay.style.top = "0";
+            overlay.style.left = "0";
+            overlay.style.width = "100%";
+            overlay.style.height = "100%";
+            overlay.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
+            overlay.style.zIndex = "1000000";
+
+            const centerContainer = document.createElement("div");
+
+            centerContainer.style.position = "absolute";
+            centerContainer.style.top = "50%";
+            centerContainer.style.left = "50%";
+            centerContainer.style.color = "white";
+            centerContainer.style.transform = "translate(-50%, -50%)";
+            centerContainer.style.fontSize = "50px";
+            centerContainer.style.whiteSpace = "nowrap";
+
+            const img = document.createElement("img");
+            img.src = browser.runtime.getURL("loading.svg");
+
+            img.style.width = "60px";
+            img.style.height = "60px";
+
+            const textDiv = document.createElement("div");
+            textDiv.innerText = message.thinking ? "🤔" : browser.i18n.getMessage("sendingImage");
+
+            centerContainer.appendChild(img);
+            centerContainer.appendChild(textDiv);
+
+            overlay.appendChild(centerContainer);
+
+            document.body.appendChild(overlay);
             break;
         case "image-get-end":
             elem.querySelector("div > div > div")

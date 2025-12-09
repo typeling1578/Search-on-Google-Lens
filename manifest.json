@@ -4,7 +4,7 @@
     "version": "1.6.10",
     "description": "__MSG_extensionDescription__",
     "default_locale": "en",
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
             "id": "{56b8308e-566b-4dc0-9957-f6341ceb8552}",
             "strict_min_version": "115.0"
